@@ -1,0 +1,1481 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#faf9f5;color:#141413}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style>
+<title>harshika baid</title>
+<meta name="description" content="i build second brains for founders and ai automations for businesses.">
+<meta property="og:title" content="harshika baid">
+<meta property="og:description" content="i build second brains for founders and ai automations for businesses.">
+</head><body>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600&family=Geist+Mono:wght@400;500&family=EB+Garamond:ital,wght@0,400;0,500;1,400;1,500&family=Space+Grotesk:wght@400;500;600&display=swap">
+<style>
+  /* layout: full-bleed 3D room at night; quiet HTML chrome pinned to the four corners; a side sheet (bottom sheet on phones) for each object */
+  :root {
+    --night: #081216;        /* room shadows, page ground */
+    --ink: #ece7dc;          /* primary text, warm off-white like lamplight on paper */
+    --dim: #8b8a93;          /* secondary text */
+    --lamp: #ffb45c;         /* the one accent: the desk lamp */
+    --screen: #9fd8ff;       /* laptop glow, used only for terminal bits */
+    --glass: rgba(8, 20, 24, 0.74);
+    --line: rgba(236, 231, 220, 0.12);
+    --sans: "Geist", ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+    --mono: "Geist Mono", ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+    color-scheme: dark;
+  }
+  html, body { height: 100%; }
+  body {
+    background: var(--night); color: var(--ink);
+    font-family: var(--sans); font-size: 15px; line-height: 1.55;
+    overflow: hidden; -webkit-font-smoothing: antialiased;
+  }
+  #scene { position: fixed; inset: 0; display: block; width: 100%; height: 100%; outline: none; }
+  a { color: inherit; }
+  button { font: inherit; color: inherit; background: none; border: 0; cursor: pointer; }
+  :focus-visible { outline: 1.5px solid var(--lamp); outline-offset: 3px; border-radius: 4px; }
+
+  /* corner chrome */
+  .chrome { position: fixed; z-index: 5; pointer-events: none; }
+  .chrome > * { pointer-events: auto; }
+  .top-left { top: calc(env(safe-area-inset-top, 0px) + 22px); left: 24px; }
+  .top-right { top: calc(env(safe-area-inset-top, 0px) + 24px); right: 24px; text-align: right; }
+  .bottom-left { bottom: calc(env(safe-area-inset-bottom, 0px) + 22px); left: 24px; }
+  .bottom-right { bottom: calc(env(safe-area-inset-bottom, 0px) + 22px); right: 24px; }
+
+  .name { font-size: 20px; font-weight: 600; letter-spacing: -0.01em; margin: 0; }
+  .bio { margin: 2px 0 0; color: var(--dim); font-size: 13.5px; max-width: 30ch; }
+  .meta { font-family: var(--mono); font-size: 11.5px; color: var(--dim); display: grid; gap: 4px; letter-spacing: 0.02em; }
+  .meta b { color: var(--ink); font-weight: 500; }
+  .status { display: inline-flex; align-items: center; gap: 7px; }
+  .status::before { content: ""; width: 6px; height: 6px; border-radius: 50%; background: var(--lamp); box-shadow: 0 0 10px var(--lamp); animation: pulse 2.4s ease-in-out infinite; }
+  @keyframes pulse { 50% { opacity: .35; } }
+  .mode { display: inline-flex; margin-top: 10px; padding: 2px; border: 1px solid var(--line); border-radius: 999px; background: var(--glass); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); }
+  .mode button { font-family: var(--mono); font-size: 11px; letter-spacing: .03em; color: var(--dim); padding: 3px 10px; border-radius: 999px; transition: color .2s, background .2s; }
+  .mode button:hover { color: var(--ink); }
+  .mode button[aria-pressed="true"] { color: var(--night); background: var(--ink); }
+  body.day .vignette { background: radial-gradient(120% 90% at 55% 45%, transparent 50%, rgba(10, 14, 12, .45) 100%); }
+  body.day .grain { opacity: .06; }
+  .vignette { transition: background 1.2s; }
+
+  .hint { font-family: var(--mono); font-size: 11.5px; color: var(--dim); letter-spacing: 0.02em; margin: 0; }
+  .hint kbd { font-family: inherit; color: var(--ink); border: 1px solid var(--line); border-radius: 4px; padding: 0 5px; }
+  .links { display: flex; gap: 16px; font-family: var(--mono); font-size: 12px; }
+  .links a { text-decoration: none; color: var(--dim); transition: color .2s; }
+  .links a:hover { color: var(--lamp); }
+  .now { margin: 12px 0 0; font-size: 13.5px; display: flex; gap: 8px; align-items: baseline; max-width: 34ch; }
+  .now span { font-family: var(--mono); font-size: 10.5px; letter-spacing: .08em; text-transform: uppercase; color: var(--night); background: var(--screen); padding: 1px 6px; border-radius: 4px; }
+  .trail { margin: 10px 0 0; font-size: 15px; color: var(--ink); max-width: 34ch; line-height: 1.45; }
+  .grain, .vignette { position: fixed; inset: 0; z-index: 3; pointer-events: none; }
+  .vignette { background: radial-gradient(120% 90% at 55% 45%, transparent 45%, rgba(2, 8, 10, .7) 100%); }
+  .grain { opacity: .09; mix-blend-mode: overlay; background-size: 160px 160px; animation: grain .5s steps(4) infinite; }
+  @keyframes grain { 25% { background-position: 40px -30px; } 50% { background-position: -50px 20px; } 75% { background-position: 20px 60px; } }
+  .nb { white-space: nowrap; }
+  .chips { list-style: none; margin: 8px 0 0; padding: 0; display: flex; flex-wrap: wrap; gap: 6px; }
+  .chips li { font-family: var(--mono); font-size: 12px; letter-spacing: .03em; color: var(--ink); padding: 3px 9px; border: 1px solid var(--line); border-radius: 999px; background: var(--glass); }
+  .cta { text-decoration: none;
+   
+    margin-top: 14px; display: inline-flex; align-items: center; gap: 8px;
+    font-family: var(--mono); font-size: 13.5px; letter-spacing: 0.02em;
+    padding: 9px 16px; border-radius: 999px; background: var(--lamp); color: var(--night); font-weight: 500;
+    box-shadow: 0 0 24px rgba(255, 180, 92, .25); transition: transform .2s, box-shadow .2s;
+  }
+  .cta:hover { transform: translateY(-1px); box-shadow: 0 0 32px rgba(255, 180, 92, .45); }
+  .cards { display: grid; gap: 10px; }
+  .card { border: 1px solid var(--line); border-radius: 12px; background: rgba(8, 18, 22, .45); }
+  .card summary { list-style: none; cursor: pointer; padding: 14px 16px; display: grid; grid-template-columns: 1fr auto; gap: 2px 12px; align-items: center; }
+  .card summary::-webkit-details-marker { display: none; }
+  .card summary b { font-size: 16px; font-weight: 600; letter-spacing: -0.01em; }
+  .card summary span { grid-column: 1; color: var(--dim); font-size: 13.5px; }
+  .card summary::after { content: "+"; grid-column: 2; grid-row: 1 / span 2; font-family: var(--mono); color: var(--lamp); font-size: 18px; transition: transform .25s; }
+  .card[open] summary::after { transform: rotate(45deg); }
+  .card .more { padding: 0 16px 16px; display: grid; gap: 12px; font-size: 14px; }
+  .card .more p { color: #cfcac0; }
+  .card ul { margin: 0; padding-left: 18px; color: #cfcac0; display: grid; gap: 6px; }
+  .reach { display: flex; flex-wrap: wrap; gap: 10px; }
+  .reach a { font-family: var(--mono); font-size: 12.5px; text-decoration: none; padding: 8px 14px; border: 1px solid var(--line); border-radius: 999px; }
+  .reach a:hover { border-color: var(--lamp); color: var(--lamp); }
+
+  /* object tags, positioned over the 3D scene every frame */
+  .tags { position: fixed; inset: 0; z-index: 4; pointer-events: none; }
+  .tag {
+    position: absolute; left: 0; top: 0; pointer-events: auto;
+    display: inline-flex; align-items: center; gap: 8px; white-space: nowrap;
+    font-family: var(--mono); font-size: 11.5px; letter-spacing: 0.02em;
+    padding: 5px 10px 5px 8px; border-radius: 999px;
+    background: var(--glass); border: 1px solid var(--line); color: var(--ink);
+    backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
+    transform: translate(-50%, -100%); transition: opacity .3s, border-color .2s, color .2s;
+  }
+  .tag::before { content: ""; width: 5px; height: 5px; border-radius: 50%; background: var(--lamp); }
+  .tag .yr { color: var(--dim); }
+  .tag:hover, .tag.hot { border-color: rgba(255, 180, 92, .55); }
+  .tag:hover, .tag.hot { color: var(--lamp); }
+  body.open .tag { opacity: 0; pointer-events: none; }
+  body.no-gl .tags { position: fixed; inset: auto 0 50% 0; display: flex; justify-content: center; gap: 10px; flex-wrap: wrap; padding: 0 16px; }
+  body.no-gl .tag { position: static; transform: none; }
+
+  /* the sheet */
+  .sheet {
+    position: fixed; z-index: 10; top: 0; right: 0; bottom: 0;
+    width: min(460px, 100%); display: flex; flex-direction: column;
+    background: var(--glass); border-left: 1px solid var(--line);
+    backdrop-filter: blur(18px) saturate(1.1); -webkit-backdrop-filter: blur(18px) saturate(1.1);
+    transform: translateX(104%); transition: transform .55s cubic-bezier(.2, .8, .2, 1);
+    padding-top: env(safe-area-inset-top, 0px); padding-bottom: env(safe-area-inset-bottom, 0px);
+  }
+  body.open .sheet { transform: none; }
+  .sheet-head {
+    display: flex; align-items: center; justify-content: space-between; gap: 12px;
+    padding: 18px 24px; border-bottom: 1px solid var(--line);
+    font-family: var(--mono); font-size: 12px; color: var(--dim);
+  }
+  .path { color: var(--screen); }
+  .close { font-family: var(--mono); font-size: 12px; color: var(--dim); padding: 4px 8px; border: 1px solid var(--line); border-radius: 6px; }
+  .close:hover { color: var(--ink); }
+  .sheet-body { flex: 1; overflow-y: auto; padding: 28px 24px 24px; overscroll-behavior: contain; }
+  .entry { display: grid; gap: 22px; }
+  .era { font-family: var(--mono); font-size: 11.5px; letter-spacing: 0.06em; text-transform: uppercase; color: var(--lamp); margin: 0; }
+  .entry h2 { font-size: clamp(28px, 4.2vw, 36px); line-height: 1.05; letter-spacing: -0.035em; font-weight: 600; margin: -10px 0 0; text-wrap: balance; }
+  .entry p { margin: 0; color: #cfcac0; max-width: 60ch; }
+  .label { font-family: var(--mono); font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--dim); margin: 0 0 8px; }
+  .receipts { list-style: none; margin: 0; padding: 0; border-top: 1px solid var(--line); }
+  .receipts li { display: grid; grid-template-columns: 7.5em 1fr; gap: 14px; padding: 11px 0; border-bottom: 1px solid var(--line); font-size: 14px; }
+  .receipts li > span:first-child { font-family: var(--mono); font-size: 11.5px; color: var(--dim); padding-top: 2px; }
+  .receipts li > span:last-child { min-width: 0; }
+  .stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; background: var(--line); border: 1px solid var(--line); border-radius: 10px; overflow: hidden; }
+  .stats div { background: rgba(8, 18, 22, .6); padding: 14px 12px; }
+  .stats b { display: block; font-size: 22px; font-weight: 600; letter-spacing: -0.03em; font-variant-numeric: tabular-nums; }
+  .stats span { font-family: var(--mono); font-size: 10.5px; color: var(--dim); line-height: 1.35; display: block; margin-top: 2px; }
+  .entry a.inline { color: var(--ink); text-decoration: underline; text-decoration-color: var(--lamp); text-underline-offset: 3px; }
+  .entry a.inline:hover { color: var(--lamp); }
+  .stuck { border-left: 2px solid var(--lamp); padding-left: 14px; color: var(--ink) !important; font-size: 15.5px; }
+  .sheet-foot { display: flex; justify-content: space-between; gap: 12px; padding: 14px 24px; border-top: 1px solid var(--line); font-family: var(--mono); font-size: 12px; }
+  .sheet-foot button { color: var(--dim); }
+  .sheet-foot button:hover { color: var(--lamp); }
+
+
+  /* the osllo panel wears the osllo page's type and colours: dark glass at night, white glass by day */
+  .sheet[data-key="toy"] { --o-accent: #6cc6d8; --o-peach: #fcd6cf; --o-text: #d3dcdf; --o-line: rgba(236, 231, 220, .14); transition: transform .55s cubic-bezier(.2, .8, .2, 1), background .6s, border-color .6s; }
+  .sheet[data-key="toy"] .path { color: var(--o-accent); }
+  .sheet[data-key="toy"] .era { color: var(--o-accent); letter-spacing: .08em; }
+  .sheet[data-key="toy"] .entry h2 { font-family: "EB Garamond", Georgia, serif; font-weight: 500; font-size: clamp(34px, 4.6vw, 44px); line-height: 1; letter-spacing: -0.015em; }
+  .sheet[data-key="toy"] .entry h2 em { font-style: italic; font-weight: 400; color: var(--o-accent); }
+  .sheet[data-key="toy"] .entry p { color: var(--o-text); font-size: 15px; line-height: 1.6; }
+  .sheet[data-key="toy"] .entry a.inline { color: inherit; text-decoration-color: var(--o-peach); }
+  .sheet[data-key="toy"] .entry a.inline:hover { color: var(--o-peach); }
+  .sheet[data-key="toy"] .label { color: var(--o-accent); }
+  .sheet[data-key="toy"] .stats { background: none; border: 0; border-top: 1.5px solid currentColor; border-bottom: 1px solid var(--o-line); border-radius: 0; gap: 0; }
+  .sheet[data-key="toy"] .stats div { background: none; padding: 16px 14px 14px 0; border-bottom: 1px solid var(--o-line); }
+  .sheet[data-key="toy"] .stats div:nth-child(even) { padding-left: 14px; border-left: 1px solid var(--o-line); }
+  .sheet[data-key="toy"] .stats div:nth-last-child(-n+2) { border-bottom: 0; }
+  .sheet[data-key="toy"] .stats b { font-family: "EB Garamond", Georgia, serif; font-weight: 500; font-size: 36px; letter-spacing: -0.02em; line-height: 1; }
+  .sheet[data-key="toy"] .stats span { font-size: 11.5px; margin-top: 8px; }
+  .sheet[data-key="toy"] .more-link { color: var(--o-accent); }
+  .sheet[data-key="toy"] .sheet-foot button:hover, .sheet[data-key="toy"] .close:hover { color: var(--o-accent); }
+  body.day .sheet[data-key="toy"] {
+    --o-accent: #03657a; --o-text: #33454b; --o-line: rgba(16, 35, 42, .14);
+    --dim: #5d6b70; --line: rgba(16, 35, 42, .14);
+    background: rgba(255, 255, 255, .84); color: #10232a; border-color: rgba(16, 35, 42, .12);
+  }
+  body.day .sheet[data-key="toy"] .close { color: #5d6b70; }
+  body.day .sheet[data-key="toy"] .entry a.inline { text-decoration-color: #e8414a; }
+  body.day .sheet[data-key="toy"] .entry a.inline:hover { color: #03657a; }
+  body.day .sheet[data-key="toy"] :focus-visible { outline-color: #03657a; }
+
+
+  /* the ai panel wears the ai page's black, white and grey: dark glass at night, white glass by day */
+  .sheet[data-key="laptop"] { --a-accent: #f2f2f2; --a-text: #c9c9c9; --a-dim: #8e8e8e; --a-line: rgba(255, 255, 255, .14); transition: transform .55s cubic-bezier(.2, .8, .2, 1), background .6s, border-color .6s; }
+  .sheet[data-key="laptop"] .path, .sheet[data-key="laptop"] .era { color: var(--a-accent); }
+  .sheet[data-key="laptop"] .era { letter-spacing: .08em; }
+  .sheet[data-key="laptop"] .entry h2 { font-family: "EB Garamond", Georgia, serif; font-weight: 500; font-size: clamp(32px, 4.4vw, 42px); line-height: 1.02; letter-spacing: -0.015em; }
+  .sheet[data-key="laptop"] .entry p, .sheet[data-key="laptop"] .card .more p, .sheet[data-key="laptop"] .card ul { color: var(--a-text); }
+  .sheet[data-key="laptop"] .entry p { font-size: 15px; line-height: 1.6; }
+  .sheet[data-key="laptop"] .card { background: none; border-color: var(--a-line); border-radius: 2px; }
+  .sheet[data-key="laptop"] .card summary b { font-family: "EB Garamond", Georgia, serif; font-weight: 500; font-size: 22px; }
+  .sheet[data-key="laptop"] .card summary span { color: var(--a-dim); }
+  .sheet[data-key="laptop"] .card summary::after { color: var(--a-accent); }
+  .sheet[data-key="laptop"] .card[open] { background: rgba(255, 255, 255, .04); }
+  .sheet[data-key="laptop"] .more-link { color: var(--a-accent); text-decoration: underline; text-underline-offset: 3px; text-decoration-color: var(--a-dim); }
+  .sheet[data-key="laptop"] .sheet-foot button:hover, .sheet[data-key="laptop"] .close:hover { color: var(--a-accent); }
+  body.day .sheet[data-key="laptop"] {
+    --a-accent: #111111; --a-text: #3a3a3a; --a-dim: #6b6b6b; --a-line: rgba(17, 17, 17, .14);
+    --dim: #6b6b6b; --line: rgba(17, 17, 17, .14);
+    background: rgba(255, 255, 255, .86); color: #111; border-color: rgba(17, 17, 17, .12);
+  }
+  body.day .sheet[data-key="laptop"] .card[open] { background: rgba(17, 17, 17, .03); }
+  body.day .sheet[data-key="laptop"] .close { color: #6b6b6b; }
+  body.day .sheet[data-key="laptop"] :focus-visible { outline-color: #111; }
+
+
+  /* ai panel: two tiles that open their full pages; the one you picked stays lit */
+  .card-link { display: grid; gap: 4px; width: 100%; text-align: left; padding: 16px 44px 16px 16px; position: relative;
+    border: 1px solid var(--a-line, var(--line)); border-radius: 2px; transition: background .25s, color .25s, border-color .25s; }
+  .card-link b { font-family: "EB Garamond", Georgia, serif; font-weight: 500; font-size: 22px; letter-spacing: -0.01em; line-height: 1.1; }
+  .card-link span { font-size: 13.5px; color: var(--a-dim, var(--dim)); transition: color .25s; }
+  .card-link::after { content: "→"; position: absolute; right: 16px; top: 50%; transform: translateY(-50%); font-family: var(--mono); transition: transform .25s; }
+  .card-link:hover { border-color: var(--a-accent, var(--ink)); }
+  .card-link:hover::after { transform: translate(3px, -50%); }
+  .card-link:active, .card-link.on { border-color: var(--a-accent, var(--ink)); }
+
+  /* project pages: a full-screen scrolling page over the desk */
+  .page {
+    position: fixed; inset: 0; z-index: 20; overflow-y: auto; overscroll-behavior: contain;
+    background: var(--night); padding: 0 24px calc(env(safe-area-inset-bottom, 0px) + 64px);
+    opacity: 0; transform: translateY(16px); transition: opacity .4s, transform .5s cubic-bezier(.2, .8, .2, 1);
+  }
+  .page.on { opacity: 1; transform: none; }
+  .page-bar {
+    position: sticky; top: 0; z-index: 2; margin: 0 -24px; padding: calc(env(safe-area-inset-top, 0px) + 16px) 24px 16px;
+    display: flex; justify-content: space-between; align-items: center; gap: 12px;
+    font-family: var(--mono); font-size: 12px; color: var(--dim);
+    background: linear-gradient(var(--night) 70%, rgba(8, 18, 22, 0));
+  }
+  .page-bar button { color: var(--ink); }
+  .page-bar button:hover { color: var(--lamp); }
+  .page-in { max-width: 820px; margin: 0 auto; display: grid; gap: 64px; padding-top: 32px; }
+  .page h1 { font-size: clamp(44px, 9vw, 92px); line-height: .92; letter-spacing: -0.055em; font-weight: 600; margin: 8px 0 0; }
+  .page .lede { font-size: clamp(17px, 2.2vw, 20px); color: #cfcac0; max-width: 56ch; margin: 20px 0 0; text-wrap: pretty; }
+  .page section { display: grid; gap: 18px; }
+  .page h3 { font-size: 24px; letter-spacing: -0.03em; font-weight: 600; margin: 0; }
+  .page section > p { margin: 0; color: #cfcac0; max-width: 62ch; }
+  .page .stats { grid-template-columns: repeat(4, 1fr); }
+  .why { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+  .why div { border: 1px solid var(--line); border-radius: 12px; padding: 16px; display: grid; gap: 6px; align-content: start; }
+  .why b { font-size: 15px; font-weight: 600; }
+  .why span { color: var(--dim); font-size: 14px; }
+  .photos { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
+  .photo { margin: 0; display: grid; gap: 8px; }
+  .photo .frame {
+    aspect-ratio: 4 / 3; max-width: 100%; border-radius: 10px; overflow: hidden; border: 1px solid var(--line);
+    background: repeating-linear-gradient(135deg, rgba(236, 231, 220, .04) 0 10px, transparent 10px 20px), #141724;
+    display: grid; place-items: center; font-family: var(--mono); font-size: 11px; color: var(--dim);
+  }
+  .photo .frame img { width: 100%; height: 100%; object-fit: cover; display: block; }
+  .photo.wide { grid-column: span 2; }
+  .photo.wide .frame { aspect-ratio: 8 / 3; }
+  .photo figcaption { font-family: var(--mono); font-size: 11.5px; color: var(--dim); }
+  .steps { list-style: none; margin: 0; padding: 0; display: grid; gap: 0; border-top: 1px solid var(--line); counter-reset: s; }
+  .steps li { counter-increment: s; display: grid; grid-template-columns: 3em 1fr; gap: 12px; padding: 16px 0; border-bottom: 1px solid var(--line); }
+  .steps li::before { content: "0" counter(s); font-family: var(--mono); font-size: 12px; color: var(--lamp); padding-top: 3px; }
+  .steps b { display: block; font-weight: 600; }
+  .steps span { color: var(--dim); font-size: 14px; }
+  .end { border: 1px solid var(--line); border-radius: 16px; padding: 28px; display: grid; gap: 14px; justify-items: start;
+    background: radial-gradient(120% 140% at 0% 0%, rgba(255, 180, 92, .12), transparent 60%); }
+  .end h3 { font-size: 28px; }
+  .more-link { font-family: var(--mono); font-size: 12.5px; color: var(--lamp); justify-self: start; }
+  .more-link:hover { text-decoration: underline; }
+
+  /* full-story pages: white paper, zeo's blue for accents, a peach highlighter from her felt dots, the desk's geist + geist mono for labels */
+  .paper {
+    --paper: #ffffff; --ink: #10232a; --dim: #5d6b70; --line: rgba(16, 35, 42, .14);
+    --blue: #03657a; --tomato: #e8414a; --peach: #fcd6cf; --sky: #e2eff1;
+    --serif: "EB Garamond", "Iowan Old Style", Georgia, serif; --grot: var(--sans);
+    background: var(--paper); color: var(--ink); font-family: var(--grot); color-scheme: light;
+  }
+  .paper .page-bar { background: linear-gradient(var(--paper) 70%, rgba(255, 255, 255, 0)); color: var(--dim); }
+  .paper .page-bar button { color: var(--ink); font-family: var(--grot); font-weight: 500; }
+  .paper .page-bar button:hover { color: var(--blue); }
+  .paper .path { color: var(--blue); }
+  .paper .page-in { max-width: 1040px; gap: 112px; padding-top: 48px; counter-reset: sec; }
+  .paper .era { font-family: var(--mono); font-weight: 500; font-size: 12px; letter-spacing: .08em; color: var(--blue); }
+  .paper h1 { font-family: var(--serif); font-weight: 500; font-size: clamp(54px, 10.5vw, 128px); line-height: .92; letter-spacing: -0.025em; margin: 18px 0 0; max-width: 12ch; text-wrap: balance; }
+  .paper h1 em, .paper h3 em { font-style: italic; color: var(--blue); font-weight: 400; }
+  .paper .lede {
+    display: block; margin: 36px 0 0; max-width: 34em; padding: 22px 26px;
+    background: var(--peach); color: var(--ink); font-family: var(--grot); font-weight: 400; border-left: 3px solid var(--tomato);
+    font-size: clamp(17px, 2vw, 20px); line-height: 1.45;
+  }
+  .paper mark {
+    color: inherit; padding: 0 .2em; margin: 0 -.1em; border-radius: .25em .5em .3em .45em;
+    background: linear-gradient(transparent 30%, var(--peach) 30%, var(--peach) 94%, transparent 94%);
+    -webkit-box-decoration-break: clone; box-decoration-break: clone;
+  }
+  .paper mark.pink { background: linear-gradient(transparent 30%, #f9b8ae 30%, #f9b8ae 94%, transparent 94%); }
+
+  .paper .stats { grid-template-columns: repeat(4, 1fr); gap: 0; background: none; border: 0; border-top: 1.5px solid var(--ink); border-bottom: 1px solid var(--line); border-radius: 0; overflow: visible; }
+  .paper .stats div { background: none; padding: 22px 18px 20px 0; }
+  .paper .stats div + div { padding-left: 18px; border-left: 1px solid var(--line); }
+  .paper .stats b { font-family: var(--serif); font-weight: 500; font-size: clamp(40px, 5.4vw, 64px); letter-spacing: -0.02em; line-height: 1; }
+  .paper .stats span { font-family: var(--grot); font-size: 12.5px; color: var(--dim); margin-top: 10px; }
+
+  .paper section { counter-increment: sec; grid-template-columns: 150px minmax(0, 1fr); column-gap: 48px; row-gap: 20px; align-items: start; }
+  .paper section > * { grid-column: 2; }
+  .paper section::before {
+    content: "0" counter(sec); grid-column: 1; grid-row: 1 / span 6;
+    font-family: var(--serif); font-style: italic; font-size: 76px; line-height: .8; color: var(--blue);
+    border-top: 1.5px solid var(--ink); padding-top: 14px;
+  }
+  .paper .label { font-family: var(--mono); font-weight: 500; font-size: 11.5px; letter-spacing: .08em; color: var(--blue); margin: 0; border-top: 1px solid var(--line); padding-top: 16px; }
+  .paper h3 { font-family: var(--serif); font-weight: 500; font-size: clamp(32px, 4.2vw, 48px); line-height: 1.02; letter-spacing: -0.015em; max-width: 20ch; text-wrap: balance; }
+  .paper section > p { color: #33454b; font-size: 17px; line-height: 1.6; max-width: 58ch; }
+
+  .paper .why { gap: 18px; }
+  .paper .why div { border: 0; border-radius: 2px; padding: 22px 20px 24px; gap: 10px; box-shadow: 0 1px 0 rgba(0,0,0,.06), 0 10px 24px -14px rgba(16, 35, 42, .28); }
+  .paper .why div:nth-child(1) { background: var(--peach); transform: rotate(-1.2deg); }
+  .paper .why div:nth-child(2) { background: #fff; outline: 1px solid var(--line); transform: rotate(.8deg) translateY(10px); }
+  .paper .why div:nth-child(3) { background: var(--sky); transform: rotate(-.5deg); }
+  .paper .why b { font-family: var(--serif); font-size: 24px; font-weight: 500; line-height: 1.1; }
+  .paper .why span { color: #33454b; font-size: 14.5px; }
+
+  .paper .photos { gap: 22px; }
+  .paper .photo { gap: 10px; }
+  .paper .photo .frame {
+    border: 8px solid #fff; border-bottom-width: 8px; border-radius: 2px;
+    box-shadow: 0 0 0 1px var(--line), 0 12px 26px -16px rgba(16, 35, 42, .4);
+    background: repeating-linear-gradient(135deg, rgba(3, 101, 122, .07) 0 12px, rgba(252, 214, 207, .55) 12px 24px), #fff;
+    color: var(--blue); font-family: var(--grot); font-weight: 500;
+  }
+  .paper .photo:nth-child(odd) .frame { transform: rotate(-.8deg); }
+  .paper .photo:nth-child(even) .frame { transform: rotate(.7deg); }
+  .paper .photo figcaption { font-family: var(--serif); font-style: italic; font-size: 15px; color: var(--dim); }
+
+  .paper .steps { border-top: 1.5px solid var(--ink); display: grid; grid-template-columns: 1fr 1fr; column-gap: 32px; }
+  .paper .steps li { grid-template-columns: 2.4em 1fr; padding: 20px 0; }
+  .paper .steps li::before { font-family: var(--serif); font-style: italic; font-size: 30px; line-height: 1; color: var(--blue); padding-top: 0; }
+  .paper .steps b { font-family: var(--serif); font-weight: 500; font-size: 22px; line-height: 1.15; }
+  .paper .steps span { color: #33454b; font-size: 14.5px; }
+
+  .paper .end { background: var(--blue); border: 0; border-radius: 2px; padding: clamp(28px, 5vw, 56px); gap: 16px; color: #fff; }
+  .paper .end .era { color: var(--peach); }
+  .paper .end h3 { font-family: var(--serif); font-weight: 500; font-size: clamp(40px, 6vw, 72px); line-height: .95; color: #fff; }
+  .paper .end h3 em { color: var(--peach); }
+  .paper .end p { color: rgba(255, 255, 255, .88); font-size: 17px; max-width: 46ch; }
+  .paper .cta { background: var(--peach); color: var(--ink); box-shadow: none; font-family: var(--grot); font-weight: 600; letter-spacing: 0; font-size: 14px; padding: 12px 20px; }
+  .paper .cta:hover { box-shadow: 0 6px 18px -8px rgba(0, 0, 0, .35); }
+  .paper :focus-visible { outline-color: var(--blue); }
+
+  /* the rebrand: before and after, full width, uncropped */
+  #os-photos-rebrand { grid-template-columns: 1fr; gap: 28px; }
+  #os-photos-rebrand .frame { aspect-ratio: auto; }
+  #os-photos-rebrand .frame img { height: auto; }
+  #os-photos-rebrand .frame.logo { background: #fff; padding: clamp(28px, 6vw, 64px) clamp(28px, 12vw, 140px); }
+  #os-photos-rebrand .frame.logo img { object-fit: contain; }
+
+  /* the stores: two tall photos side by side */
+  #os-photos-store, #os-photos-events, #os-photos-planet { grid-template-columns: 1fr 1fr; }
+  #os-photos-store .frame, #os-photos-events .frame { aspect-ratio: 3 / 4; }
+
+  .photo .frame.natural img { height: auto; }
+  /* second brain: the cohort group shot shown whole */
+  #sb-photos .photo.wide .frame { aspect-ratio: auto; }
+  #sb-photos .photo.wide .frame img { height: auto; }
+
+
+  /* the ai pages: balanced rhythm, a little motion */
+  .paper.mono .page-in { gap: 88px; padding-top: 32px; }
+  .paper.mono section { row-gap: 18px; }
+  .paper.mono section::before { font-size: 64px; }
+  .paper.mono h3 { font-size: clamp(30px, 3.8vw, 44px); }
+  .paper.mono .steps { grid-template-columns: 1fr; max-width: 640px; }
+  .paper.mono .steps li { padding: 16px 0; }
+  .paper.mono .why { margin-top: 18px; }
+  .paper .why div { transition: transform .35s cubic-bezier(.2, .8, .2, 1), box-shadow .35s; cursor: default; }
+  .paper .why div:hover, .paper .why div:active { transform: translateY(-8px) rotate(0deg) scale(1.02); box-shadow: 0 1px 0 rgba(0,0,0,.06), 0 22px 36px -18px rgba(16, 35, 42, .45); }
+  .paper.mono h1 em { background: linear-gradient(currentColor, currentColor) 0 92% / 0 2px no-repeat; transition: background-size .9s cubic-bezier(.2, .8, .2, 1) .35s; }
+  .page.on.paper.mono h1 em { background-size: 100% 2px; }
+  .paper.mono h1:hover em { background-size: 0 2px; transition-delay: 0s; transition-duration: .4s; }
+  .paper .explain { display: grid; gap: 18px; }
+  .paper .explain h3 { max-width: 24ch; }
+  .paper header.explain h1 { max-width: none; font-size: clamp(38px, 6vw, 72px); line-height: .98; }
+  .paper header.explain .parts { margin-top: 36px; }
+  #page-ai-workflows h1 { max-width: 22ch; font-size: clamp(38px, 6vw, 72px); line-height: .98; }
+  .paper .parts { position: relative; display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; max-width: 760px; margin-top: 6px; }
+  .paper .parts::before { content: ""; position: absolute; left: 8%; right: 8%; top: 50%; border-top: 1px dashed var(--line); }
+  .paper .parts div { position: relative; display: grid; gap: 4px; padding: 16px 18px; background: #fff; border: 1px solid var(--line); border-radius: 6px;
+    transition: transform .35s cubic-bezier(.2, .8, .2, 1), box-shadow .35s, border-color .35s; }
+  .paper .parts div:hover, .paper .parts div:active { transform: translateY(-6px); border-color: var(--ink); box-shadow: 0 18px 30px -18px rgba(0, 0, 0, .35); }
+  .paper .parts small { font-family: var(--mono); font-size: 10.5px; letter-spacing: .08em; text-transform: uppercase; color: var(--dim); }
+  .paper .parts div:not(:first-child) small { color: var(--ink); }
+  .paper .parts b { font-family: var(--serif); font-weight: 500; font-size: 22px; line-height: 1.1; }
+  .paper .parts span { font-size: 14px; color: #3a3a3a; }
+  @media (max-width: 720px) { .paper .parts { grid-template-columns: 1fr; } .paper .parts::before { left: 50%; right: auto; top: 6%; bottom: 6%; border-top: 0; border-left: 1px dashed var(--line); } }
+  .paper a.inline { color: var(--ink); text-decoration: underline; text-underline-offset: 3px; text-decoration-color: var(--dim); }
+  .paper a.inline:hover { text-decoration-color: var(--ink); }
+  .paper .uses { margin-top: 8px; }
+  .paper .uses::before { display: none; }
+  .paper .uses-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; max-width: 760px; }
+  .paper .uses-grid div { display: grid; gap: 4px; padding: 16px 18px; background: #f5f5f4; border-radius: 6px; transition: transform .35s cubic-bezier(.2, .8, .2, 1), background .35s; }
+  .paper .uses-grid div:hover { transform: translateY(-4px); background: #efefed; }
+  .paper .uses-grid b { font-family: var(--serif); font-weight: 500; font-size: 21px; line-height: 1.15; }
+  .paper .uses-grid span { font-size: 14px; color: #3a3a3a; }
+  @media (max-width: 720px) { .paper .uses-grid { grid-template-columns: 1fr; } }
+  .paper .quotes { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; max-width: 760px; margin-top: 6px; }
+  .paper .quotes figure { margin: 0; padding: 16px 18px; background: #f5f5f4; border-radius: 6px; display: grid; gap: 14px; align-content: space-between; }
+  .paper .quotes blockquote { margin: 0; font-size: 14.5px; line-height: 1.55; color: var(--ink); }
+  .paper .quotes figcaption { display: flex; align-items: center; gap: 10px; }
+  .paper .quotes figcaption i { flex: none; width: 26px; height: 26px; border-radius: 50%; background: var(--ink); color: #fff; display: grid; place-items: center; font-style: normal; font-family: var(--serif); font-size: 14px; }
+  .paper .quotes figcaption span { display: grid; font-family: var(--mono); font-size: 11px; letter-spacing: .02em; color: var(--dim); line-height: 1.35; }
+  .paper .quotes figcaption b { font-family: var(--sans); font-size: 13px; font-weight: 500; letter-spacing: 0; color: var(--ink); }
+  @media (max-width: 720px) { .paper .quotes { grid-template-columns: 1fr; } }
+  .paper .book { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: 16px 20px; margin-top: 6px; max-width: 520px;
+    border: 1px solid var(--ink); border-radius: 2px; text-decoration: none; color: var(--ink); transition: background .25s, color .25s; }
+  .paper .book span { display: grid; gap: 2px; font-size: 13.5px; color: var(--dim); transition: color .25s; }
+  .paper .book b { font-family: var(--serif); font-weight: 500; font-size: 21px; color: var(--ink); transition: color .25s; }
+  .paper .book i { font-style: normal; font-family: var(--mono); font-size: 18px; transition: transform .25s; }
+  .paper .book:hover { background: var(--ink); color: #fff; }
+  .paper .book:hover b { color: #fff; }
+  .paper .book:hover span { color: rgba(255, 255, 255, .7); }
+  .paper .book:hover i { transform: translateX(4px); }
+  .paper .rise { opacity: 0; transform: translateY(22px); transition: opacity .7s, transform .8s cubic-bezier(.2, .8, .2, 1); }
+  .paper .rise.in { opacity: 1; transform: none; }
+  @media (prefers-reduced-motion: reduce) { .paper .rise { opacity: 1; transform: none; transition: none; } .paper.mono h1 em { transition: none; } }
+
+  /* the ai page: same layout, in black, white and grey */
+  .paper.mono { --ink: #111111; --dim: #6b6b6b; --line: rgba(17, 17, 17, .14); --blue: #111111; --tomato: #111111; --peach: #e8e8e8; --sky: #f3f3f3; }
+  .paper.mono .why div:nth-child(1) { background: #111; color: #fff; }
+  .paper.mono .why div:nth-child(1) span { color: rgba(255, 255, 255, .78); }
+  .paper.mono .end { background: #111; }
+  .paper.mono .end .era, .paper.mono .end h3 em { color: #a8a8a8; }
+  .paper.mono .cta { background: #fff; }
+  .paper.mono .photo .frame { background: repeating-linear-gradient(135deg, rgba(17, 17, 17, .05) 0 12px, #f6f6f6 12px 24px), #fff; color: var(--dim); }
+
+  @media (max-width: 720px) {
+    .paper .page-in { gap: 80px; }
+    .paper section { grid-template-columns: 1fr; }
+    .paper section::before { grid-row: auto; font-size: 56px; }
+    .paper .stats { grid-template-columns: 1fr 1fr; }
+    .paper .stats div:nth-child(3) { padding-left: 0; border-left: 0; }
+    .paper .stats div:nth-child(n+3) { border-top: 1px solid var(--line); }
+    .paper .steps { grid-template-columns: 1fr; }
+    .paper .why div:nth-child(2) { transform: rotate(.8deg); }
+  }
+
+  @media (max-width: 720px) {
+    .page { padding-left: 16px; padding-right: 16px; }
+    .page-bar { margin: 0 -16px; padding-left: 16px; padding-right: 16px; }
+    .page .stats { grid-template-columns: repeat(2, 1fr); }
+    .why { grid-template-columns: 1fr; }
+    .photos { grid-template-columns: 1fr 1fr; }
+    .photo.wide { grid-column: 1 / -1; }
+    .photo.wide .frame { aspect-ratio: 16 / 9; }
+
+    .top-left { left: 16px; } .top-right { right: 16px; } .bottom-left { left: 16px; } .bottom-right { right: 16px; }
+    .top-right .meta span:not(.status) { display: none; }
+    .bio { font-size: 13px; max-width: 24ch; }
+    .trail { font-size: 14px; max-width: 26ch; }
+    .bottom-left { bottom: calc(env(safe-area-inset-bottom, 0px) + 52px); }
+    .bottom-right { left: 16px; right: auto; }
+    .sheet {
+      top: auto; left: 0; width: 100%; height: 72%;
+      border-left: 0; border-top: 1px solid var(--line); border-radius: 18px 18px 0 0;
+      transform: translateY(104%);
+    }
+    .sheet-head, .sheet-body, .sheet-foot { padding-left: 18px; padding-right: 18px; }
+    .receipts li { grid-template-columns: 1fr; gap: 2px; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .sheet { transition: none; }
+    .status::before { animation: none; }
+    .grain { animation: none; }
+  }
+</style>
+
+<div class="vignette"></div>
+<div class="grain" id="grain"></div>
+<canvas id="scene" aria-label="a study desk at night with a globe, zeo the plush pony and a laptop"></canvas>
+
+<header class="chrome top-left">
+  <h1 class="name">harshika baid</h1>
+  <ul class="chips" aria-label="about"><li>operator</li><li>ai-native</li><li>creator</li></ul>
+  <p class="trail">i build second brains for founders and <span class="nb">ai automations</span> for businesses.</p>
+  <a class="cta" id="work-btn" href="https://cal.com/harshikabaid" target="_blank" rel="noopener">work with me →</a>
+</header>
+
+<div class="chrome top-right">
+  <div class="meta">
+    <span class="status"><b>building</b></span>
+    <span>bengaluru · <b id="clock">--:--</b> ist</span>
+  </div>
+  <div class="mode" role="group" aria-label="lighting">
+    <button data-mode="night" aria-pressed="true">night</button>
+    <button data-mode="day" aria-pressed="false">day</button>
+  </div>
+</div>
+
+<div class="tags" id="tags">
+  <button class="tag" data-key="globe">climate action · <span class="yr">2022</span></button>
+  <button class="tag" data-key="toy">osllo · retail · <span class="yr">2024</span></button>
+  <button class="tag" data-key="laptop">ai · <span class="yr">2026</span></button>
+</div>
+
+<div class="chrome bottom-left">
+  <p class="hint">click anything on the desk · or press <kbd>1</kbd> <kbd>2</kbd> <kbd>3</kbd></p>
+</div>
+
+<nav class="chrome bottom-right links" aria-label="elsewhere">
+  <a data-link="linkedin" target="_blank" rel="noopener">linkedin</a>
+  <a data-link="instagram" target="_blank" rel="noopener">instagram</a>
+  <a data-link="x" target="_blank" rel="noopener">x</a>
+  <a data-link="github" target="_blank" rel="noopener">github</a>
+</nav>
+
+<aside class="sheet" id="sheet" role="dialog" aria-modal="false" aria-labelledby="sheet-title" hidden>
+  <div class="sheet-head">
+    <span class="path" id="sheet-path">~/</span>
+    <button class="close" id="close" aria-label="close">esc</button>
+  </div>
+  <div class="sheet-body" id="sheet-body"></div>
+  <div class="sheet-foot" id="sheet-foot">
+    <button id="prev">← prev</button>
+    <button id="next">next →</button>
+  </div>
+</aside>
+
+
+<div class="page paper mono" id="page-second-brain" role="dialog" aria-modal="true" aria-labelledby="sb-title" hidden>
+  <div class="page-bar">
+    <button data-close-page>← back to the desk</button>
+    <span class="path">~/ai/second-brain</span>
+  </div>
+  <div class="page-in">
+    <header class="explain">
+      <p class="era">second brain · what is it?</p>
+      <h1 id="sb-title">your personal operating system: <em>everything you know,</em> in one place any ai can run on.</h1>
+      <div class="parts">
+        <div><small>rented</small><b>the ai</b><span>the model: claude, chatgpt, codex.</span></div>
+        <div><small>owned</small><b>the memory</b><span>everything about you and your work, in one place.</span></div>
+        <div><small>owned</small><b>the home</b><span>where it lives: on your laptop.</span></div>
+      </div>
+    </header>
+
+    <section>
+      <p class="label">one-on-one</p>
+      <h3>your own second brain, <em>set up with you.</em></h3>
+      <p>it starts with a 30-minute discovery call, where i learn how you work. then we build yours together, one-on-one.</p>
+      <p>for founders, i do it remote or in person. i set it up around how they actually work, load what they already have, and stay until it's running.</p>
+      <div class="quotes">
+        <figure><blockquote>"this actually becomes a very important risk mitigation. because until now, there was no central repository of workflows, marketing content, logins."</blockquote><figcaption><i>“</i><span><b>founder</b>global advisory firm</span></figcaption></figure>
+        <figure><blockquote>"probably the most significant thing i've done since the start of ai."</blockquote><figcaption><i>“</i><span><b>head of growth</b>ai infrastructure startup, new york</span></figcaption></figure>
+      </div>
+      <a class="book" href="https://cal.com/harshikabaid/second-brain-setup" target="_blank" rel="noopener"><span><b>book your free discovery call</b>30 minutes. tell me how you work.</span><i>→</i></a>
+    </section>
+
+    <section>
+      <p class="label">how it works</p>
+      <ol class="steps">
+        <li><div><b>discovery call</b><span>30 minutes. i learn how you work and what you need it for.</span></div></li>
+        <li><div><b>set it up</b><span>the system installed on your machine, wired to the ai you already use.</span></div></li>
+        <li><div><b>load your context</b><span>your past chats, notes and an interview, so it knows you on day one.</span></div></li>
+        <li><div><b>build the habit</b><span>a few minutes a day of feeding it. that's what makes it compound.</span></div></li>
+      </ol>
+      <div class="why">
+        <div><b>it lives on your laptop.</b><span>plain files you own. nothing locked inside one app.</span></div>
+        <div><b>it works with any model.</b><span>claude, chatgpt, codex. switch whenever something better ships.</span></div>
+        <div><b>it learns your life, not your chats.</b><span>built from what you choose to put in: journals, goals, the way you talk.</span></div>
+      </div>
+    </section>
+
+    <section>
+      <p class="label">offline workshops</p>
+      <h3>a room full of laptops. everyone left with <em>their own second brain.</em></h3>
+      <p><a class="inline" href="https://www.linkedin.com/in/sanket-bajaj-720086192" target="_blank" rel="noopener">sanket</a> and i ran two in-person cohorts in bengaluru, on 25 july and 1 august 2026. fifteen people in the first room, and <mark>every laptop set up by the end.</mark></p>
+      <div class="photos" id="sb-photos"></div>
+    </section>
+
+    <div class="end">
+      <p class="era">work with me</p>
+      <h3>want <em>one?</em></h3>
+      <p>a one-on-one second brain setup. it starts with a free 30-minute discovery call.</p>
+      <div class="reach">
+        <a class="cta" href="https://cal.com/harshikabaid/second-brain-setup" target="_blank" rel="noopener">book your discovery call →</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="page paper" id="page-osllo" role="dialog" aria-modal="true" aria-labelledby="os-title" hidden>
+  <div class="page-bar">
+    <button data-close-page>← back to the desk</button>
+    <span class="path">~/osllo</span>
+  </div>
+  <div class="page-in">
+    <header>
+      <p class="era">osllo · 2024–2026</p>
+      <h1 id="os-title">why does childhood have an <em>age limit?</em></h1>
+      <p class="lede">in january 2024 my family took over my baby store, one of bengaluru's largest kids' retail businesses. somewhere along the way the reins were handed to me, without a manual. two years later it was osllo.</p>
+    </header>
+
+    <div class="stats">
+      <div><b>3 lakh+</b><span>families trusted us</span></div>
+      <div><b>3</b><span>stores run</span></div>
+      <div><b>150+</b><span>brands managed</span></div>
+      <div><b>50+</b><span>events curated</span></div>
+    </div>
+
+    <section>
+      <p class="label">why osllo</p>
+      <h3>celebrate childhood, <em>don't correct it.</em></h3>
+      <p>most kids' brands start with what's wrong. a checklist of problems and their fixes: boredom, learning gaps, screen-time battles, busy schedules. we took a pause and chose to build a world that celebrates childhood instead.</p>
+      <p>then we asked a bigger question. why does childhood have an age limit? it isn't an age. it's a feeling. that's how osllo was born: <mark>a world where childhood belongs to all ages.</mark></p>
+    </section>
+
+    <section>
+      <p class="label">the rebrand</p>
+      <h3>my baby store <em>stopped fitting.</em></h3>
+      <p>if childhood isn't limited to an age, the brand couldn't be either. so we reimagined everything: the name, the philosophy, the feel of the space, and the world around it.</p>
+      <div class="photos" id="os-photos-rebrand"></div>
+    </section>
+
+    <section>
+      <p class="label">the stores</p>
+      <h3>150+ brands. <em>5,000+ skus.</em></h3>
+      <p>products across four categories: play, wear, care and go. safe, special and surprising finds, thoughtfully curated for babies, toddlers, preteens and the grown-ups who love them.</p>
+      <div class="photos" id="os-photos-store"></div>
+    </section>
+
+    <section>
+      <p class="label">experiences</p>
+      <h3>when parents stopped coming in, we gave them <em>a reason.</em></h3>
+      <p>sales dipped across kids' retail, and parents weren't stepping out of their homes. so we started parent–kid experiences in the store, a safe space for kids and parents to actually express themselves. it grew to <mark>50+ events.</mark></p>
+      <div class="photos" id="os-photos-events"></div>
+    </section>
+
+    <section>
+      <p class="label">learning to run it</p>
+      <h3>i didn't even know what a <em>kpi</em> was.</h3>
+      <p>when i started, i couldn't have told you what a good margin looked like, or why stock sitting on a shelf was costing us money.</p>
+      <p>two years later, <mark>i was running every part of the business.</mark> inventory: what to buy, what was ageing, and how fast it needed to move before it trapped our cash. finance: cash flow, and what our margins should actually be. the floor: how many of the people who walked in left with something, and how much they spent. and around all of it, the staff, the suppliers and the stores themselves.</p>
+    </section>
+
+    <section>
+      <p class="label">kinder to the planet</p>
+      <h3>small changes, <em>all of them real.</em></h3>
+      <p>brands like ariro, superbottoms and baby forest on the shelves. bamboo clothing, reusable cloth diapers and wooden toys. price tags redesigned as colour-in doodle cards, so something disposable became a keepsake. vendor packaging reused as gift boxes.</p>
+      <div class="photos" id="os-photos-planet"></div>
+    </section>
+
+    <div class="end">
+      <p class="era">see it for yourself</p>
+      <h3>see the world <em>we built.</em></h3>
+      <p>the stores are in bengaluru. the rest is online.</p>
+      <div class="reach">
+        <a class="cta" href="https://osllo.in/" target="_blank" rel="noopener">visit osllo.in →</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="page paper mono" id="page-ai-workflows" role="dialog" aria-modal="true" aria-labelledby="wf-title" hidden>
+  <div class="page-bar">
+    <button data-close-page>← back to the desk</button>
+    <span class="path">~/ai/automations</span>
+  </div>
+  <div class="page-in">
+    <header>
+      <p class="era">ai automations · for founders</p>
+      <h1 id="wf-title">every business has work ai should be doing. <em>i find yours.</em></h1>
+      <p class="lede">you and your team are busy working in the business, so nobody gets to work on it. i find the work ai can do cheaper and better than you can by hand, build it, and hand it over running.</p>
+    </header>
+
+    <section>
+      <p class="label">the problem</p>
+      <h3>you wanted to build. <em>you ended up operating.</em></h3>
+      <p>i know, because i lived it. for two years i ran osllo, one of bengaluru's largest kids' retail businesses. i wanted to build the brand. most days went to stock, suppliers, staff and the same questions on repeat.</p>
+      <p>that's where most founders are. <mark>the business runs on you, so you never get to grow it.</mark> sound familiar?</p>
+      <div class="parts uses">
+        <div><small>sales</small><b>leads wait for a reply</b><span>enquiries sit for hours, and some never hear back.</span></div>
+        <div><small>numbers</small><b>the same report, every week</b><span>someone rebuilds the sheet by hand, again.</span></div>
+        <div><small>team</small><b>answers live in one head</b><span>when that person is away, everything slows down.</span></div>
+      </div>
+    </section>
+
+    <section>
+      <p class="label">how i work</p>
+      <h3>not everything should be automated. <em>some things really should.</em></h3>
+      <p>some automations cost more to build than they will ever save. so i won't sell you a pile of bots. i look at how your business actually runs, and find the few places where ai clearly pays for itself.</p>
+      <ol class="steps">
+        <li><div><b>discovery call</b><span>30 minutes. you walk me through your week.</span></div></li>
+        <li><div><b>find what's worth automating</b><span>i map where the time goes and pick what pays back fastest.</span></div></li>
+        <li><div><b>write it down, then build it</b><span>you can't automate a mess. we put the process on paper first, then i build on it.</span></div></li>
+        <li><div><b>hand it over</b><span>something your team actually uses, with a walkthrough so it sticks.</span></div></li>
+      </ol>
+    </section>
+
+    <div class="end">
+      <p class="era">work with me</p>
+      <h3>what's eating <em>your week?</em></h3>
+      <p>book a 30-minute discovery call. walk me through how your business runs, and i'll tell you what's worth automating, and what isn't.</p>
+      <div class="reach">
+        <a class="cta" href="https://cal.com/harshikabaid" target="_blank" rel="noopener">book your discovery call →</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<template id="t-globe">
+  <article class="entry">
+    <p class="era">climate &amp; sustainability · 2022–2024</p>
+    <h2 id="sheet-title">i started with the planet.</h2>
+    <p>it started in college with a pinterest search: how do i wear the clothes i already own? that led me to sustainability, then to carbon footprints, then to instagram content on small, real steps anyone can take to cut theirs.</p>
+    <p>then a year-long dissertation on the carbon footprint of email marketing, plus internships, panels and offline events.</p>
+    <p>then it clicked: individual action only goes so far. the real lever is business. which led me to my next adventure: osllo.</p>
+    <div>
+      <p class="label">receipts</p>
+      <ul class="receipts">
+        <li><span>abu dhabi '23</span><span>moderated a panel on the future of consumption at the unctad world investment forum</span></li>
+        <li><span>un sdg</span><span>my sustainability content got shared by the un sdg account on instagram</span></li>
+        <li><span>research</span><span>wrote academic research on the carbon footprint of email marketing</span></li>
+        <li><span>degree</span><span>economics, media and political science at christ university</span></li>
+      </ul>
+    </div>
+    <p class="stuck">what stuck: everyone talks about where we need to get. almost nobody knows how. the doing is the missing part.</p>
+  </article>
+</template>
+
+<template id="t-toy">
+  <article class="entry">
+    <p class="era">osllo · 2024–2026</p>
+    <h2 id="sheet-title">then i ran a <em>kids' store.</em></h2>
+    <p>two years running <a class="inline" href="https://osllo.in/" target="_blank" rel="noopener">osllo</a>, one of bengaluru's largest kids' retail businesses. i walked in with zero experience in business and zero in parenting. it taught me more than any master's could have.</p>
+    <p>it's where i became an operator. finance, stock, staff, suppliers, events, the customer on the floor. every weak decision shows up somewhere.</p>
+    <p>it started life as my baby store. i rebranded it into osllo: new name, new philosophy, new feel for the space. childhood isn't an age, so the brand couldn't be one either.</p>
+    <div>
+      <p class="label">receipts</p>
+      <div class="stats" style="grid-template-columns: repeat(2, 1fr)">
+        <div><b>3 lakh+</b><span>families trusted us</span></div>
+        <div><b>3</b><span>stores run</span></div>
+        <div><b>150+</b><span>brands managed</span></div>
+        <div><b>50+</b><span>events curated</span></div>
+      </div>
+    </div>
+    <button class="more-link" data-page="osllo">the full story: why osllo, the rebrand, the store →</button>
+  </article>
+</template>
+
+<template id="t-laptop">
+  <article class="entry">
+    <p class="era">ai · what i do now</p>
+    <h2 id="sheet-title">now i help founders and businesses leverage ai.</h2>
+    <p>somewhere in the osllo years, ai became a real obsession. big enough that i made the hard call to exit osllo and go to network school.</p>
+    <p>what i learned there genuinely excited me. for the first time, someone like me, from a completely non-tech background, could build almost anything.</p>
+    <p>and i kept thinking about osllo. if i ran it again, i'd want someone to show me exactly what to hand over to ai. that's where most small and mid-sized founders are: busy running the business, with no time to figure out where ai fits into it.</p>
+    <p>there's so much ai can unlock for a business. here are the two ways i do it:</p>
+    <div class="cards">
+      <button class="card-link" data-page="second-brain"><b>second brain</b><span>one place for all your context. you work from it. so does your ai.</span></button>
+      <button class="card-link" data-page="ai-workflows"><b>ai automations</b><span>the repetitive work in your business, automated.</span></button>
+    </div>
+  </article>
+</template>
+
+<template id="t-work">
+  <article class="entry">
+    <p class="era">work with me</p>
+    <h2 id="sheet-title">got something ai should be doing for you?</h2>
+    <p>two ways in.</p>
+    <ul class="receipts">
+      <li><span>for you</span><span>a second brain, set up 1:1. your ai stops forgetting who you are.</span></li>
+      <li><span>for your team</span><span>ai workflows that take the repetitive work off your plate.</span></li>
+    </ul>
+    <div>
+      <p class="label">say hi</p>
+      <div class="reach">
+        <a data-link="linkedin" target="_blank" rel="noopener">dm on linkedin →</a>
+        <a data-link="instagram" target="_blank" rel="noopener">dm on instagram →</a>
+      </div>
+    </div>
+  </article>
+</template>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script>
+(() => {
+  /* your profiles: paste the full link between the quotes. empty ones stay hidden. */
+  const LINKS = {
+    linkedin: "",
+    instagram: "",
+    x: "",
+    github: "",
+  };
+
+  /* workshop + session photos for the second brain page.
+     put the image files in an images/ folder next to this page and write their names here. */
+  const PHOTOS = [
+    { src: "images/sb-cohort1.jpg", caption: "cohort 1 · bengaluru · 25 jul 2026", wide: true },
+    { src: "images/sb-cohort2.jpg", caption: "cohort 2 · 1 aug 2026", ratio: "2 / 3" },
+  ];
+
+  /* osllo page photos, same idea: file names in src, empty ones show a placeholder */
+  const OSLLO_PHOTOS = {
+    rebrand: [
+      { src: "images/osllo-before.jpg", caption: "before · my baby store" },
+      { src: "images/osllo-after.jpg", caption: "after · osllo, hsr layout" },
+      { src: "images/osllo-logo.png", caption: "the new logo, with zeo", logo: true },
+    ],
+    store: [
+      { src: "images/osllo-store.jpg", caption: "the store" },
+      { src: "images/osllo-shelves.jpg", caption: "the shelves" },
+    ],
+    events: [
+      { src: "images/osllo-event.jpg", caption: "a parent–kid experience" },
+      { src: "images/osllo-instore.jpg", caption: "in the store" },
+    ],
+    planet: [
+      { src: "images/osllo-ariro.jpg", caption: "on the shelves · ariro" },
+      { src: "images/osllo-superbottoms.jpg", caption: "on the shelves · superbottoms" },
+    ],
+  };
+
+  const ORDER = ["globe", "toy", "laptop"];
+  const PATHS = { globe: "~/climate", toy: "~/osllo", laptop: "~/ai", work: "~/work-with-me" };
+  const wireLinks = root => root.querySelectorAll("[data-link]").forEach(a => {
+    const url = LINKS[a.dataset.link];
+    if (url) a.href = url; else a.hidden = true;
+  });
+  wireLinks(document);
+  const reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const body = document.body;
+
+  /* ---------- film grain ---------- */
+  try {
+    const n = document.createElement("canvas"); n.width = n.height = 160;
+    const ng = n.getContext("2d"), d = ng.createImageData(160, 160);
+    for (let i = 0; i < d.data.length; i += 4) { const v = Math.random() * 255; d.data[i] = d.data[i + 1] = d.data[i + 2] = v; d.data[i + 3] = 255; }
+    ng.putImageData(d, 0, 0);
+    document.getElementById("grain").style.backgroundImage = `url(${n.toDataURL()})`;
+  } catch (e) {}
+
+  /* ---------- clock ---------- */
+  const clock = document.getElementById("clock");
+  const tick = () => {
+    clock.textContent = new Date().toLocaleTimeString("en-GB", { timeZone: "Asia/Kolkata", hour: "2-digit", minute: "2-digit" });
+  };
+  tick(); setInterval(tick, 15000);
+
+  /* ---------- night / day ---------- */
+  let day = false;
+  try { day = localStorage.getItem("desk-mode") === "day"; } catch (e) {}
+  const modeBtns = document.querySelectorAll(".mode button");
+  const setMode = isDay => {
+    day = isDay;
+    body.classList.toggle("day", day);
+    modeBtns.forEach(b => b.setAttribute("aria-pressed", String((b.dataset.mode === "day") === day)));
+    try { localStorage.setItem("desk-mode", day ? "day" : "night"); } catch (e) {}
+  };
+  modeBtns.forEach(b => b.addEventListener("click", () => setMode(b.dataset.mode === "day")));
+  setMode(day);
+
+  /* ---------- sheet ---------- */
+  const sheet = document.getElementById("sheet");
+  const sheetBody = document.getElementById("sheet-body");
+  const sheetPath = document.getElementById("sheet-path");
+  let active = null;
+  let onFocus = () => {};
+
+  function open(key) {
+    active = key;
+    sheetBody.innerHTML = "";
+    sheetBody.appendChild(document.getElementById("t-" + key).content.cloneNode(true));
+    wireLinks(sheetBody);
+    document.getElementById("sheet-foot").hidden = key === "work";
+    sheetBody.scrollTop = 0;
+    sheetPath.textContent = PATHS[key];
+    sheet.dataset.key = key;
+    sheet.hidden = false;
+    requestAnimationFrame(() => body.classList.add("open"));
+    onFocus(key);
+  }
+  function close() {
+    if (!active) return;
+    active = null;
+    body.classList.remove("open");
+    onFocus(null);
+    setTimeout(() => { if (!active) sheet.hidden = true; }, reduce ? 0 : 560);
+  }
+  const step = d => active !== "work" && open(ORDER[(ORDER.indexOf(active) + d + ORDER.length) % ORDER.length]);
+  document.getElementById("close").onclick = close;
+  document.getElementById("prev").onclick = () => step(-1);
+  document.getElementById("next").onclick = () => step(1);
+  document.querySelectorAll(".tag").forEach(t => t.addEventListener("click", () => open(t.dataset.key)));
+  /* ---------- project pages ---------- */
+  const renderPhotos = (photoGrid, list) => list.forEach(ph => {
+    const fig = document.createElement("figure"); fig.className = "photo" + (ph.wide ? " wide" : "");
+    const frame = document.createElement("div"); frame.className = "frame" + (ph.logo ? " logo" : "");
+    if (ph.ratio) frame.style.aspectRatio = ph.ratio;
+    if (ph.ratio === "auto") frame.classList.add("natural");
+    if (ph.full) fig.style.gridColumn = "1 / -1";
+    if (ph.src) { const img = new Image(); img.src = ph.src; img.alt = ph.caption; img.loading = "lazy"; frame.appendChild(img); }
+    else frame.textContent = "photo";
+    const cap = document.createElement("figcaption"); cap.textContent = ph.caption;
+    fig.append(frame, cap); photoGrid.appendChild(fig);
+  });
+  renderPhotos(document.getElementById("sb-photos"), PHOTOS);
+  Object.keys(OSLLO_PHOTOS).forEach(k => renderPhotos(document.getElementById("os-photos-" + k), OSLLO_PHOTOS[k]));
+  let pageOpen = null;
+  function openPage(name) {
+    const el = document.getElementById("page-" + name); if (!el) return;
+    pageOpen = el; el.hidden = false; el.scrollTop = 0;
+    requestAnimationFrame(() => el.classList.add("on"));
+    if (location.hash !== "#" + name) history.replaceState(null, "", "#" + name);
+    el.querySelector("[data-close-page]").focus({ preventScroll: true });
+  }
+  function closePage() {
+    if (!pageOpen) return;
+    const el = pageOpen; pageOpen = null; el.classList.remove("on");
+    history.replaceState(null, "", location.pathname + location.search);
+    setTimeout(() => { if (pageOpen !== el) el.hidden = true; }, reduce ? 0 : 450);
+  }
+  document.addEventListener("click", e => {
+    const t = e.target.closest("[data-page]");
+    if (t) {
+      if (t.classList.contains("card-link")) document.querySelectorAll(".card-link").forEach(c => c.classList.toggle("on", c === t));
+      openPage(t.dataset.page);
+    }
+    if (e.target.closest("[data-close-page]")) closePage();
+  });
+  if (location.hash.length > 1) openPage(location.hash.slice(1));
+  window.__pageOpen = () => !!pageOpen;
+
+  /* sections rise in as you scroll a full page */
+  if ("IntersectionObserver" in window && !reduce) document.querySelectorAll(".page.paper.mono").forEach(pg => {
+    const io = new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting) { e.target.classList.add("in"); io.unobserve(e.target); } }), { root: pg, threshold: 0.12 });
+    pg.querySelectorAll("section, .stats, .end").forEach(el => { el.classList.add("rise"); io.observe(el); });
+  });
+
+  addEventListener("keydown", e => {
+    if (pageOpen) { if (e.key === "Escape") closePage(); return; }
+    if (e.key === "Escape") close();
+    const n = parseInt(e.key, 10);
+    if (n >= 1 && n <= 3) open(ORDER[n - 1]);
+    if (active && e.key === "ArrowRight") step(1);
+    if (active && e.key === "ArrowLeft") step(-1);
+  });
+
+  /* ---------- 3D ---------- */
+  if (!window.THREE) { body.classList.add("no-gl"); return; }
+  const canvas = document.getElementById("scene");
+  let renderer;
+  try {
+    renderer = new THREE.WebGLRenderer({ canvas, antialias: true });
+  } catch (e) { body.classList.add("no-gl"); return; }
+
+  renderer.setPixelRatio(Math.min(devicePixelRatio, 2));
+  renderer.outputEncoding = THREE.sRGBEncoding;
+  renderer.toneMapping = THREE.ACESFilmicToneMapping;
+  renderer.toneMappingExposure = 0.95;
+  renderer.shadowMap.enabled = true;
+  renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+
+  const scene = new THREE.Scene();
+  scene.background = new THREE.Color("#081216");
+  scene.fog = new THREE.Fog("#081216", 3.2, 7.5);
+  const camera = new THREE.PerspectiveCamera(38, 1, 0.05, 40);
+
+  const std = (color, o = {}) => new THREE.MeshStandardMaterial(Object.assign({ color, roughness: 0.75, metalness: 0 }, o));
+  const mesh = (geo, mat, x = 0, y = 0, z = 0, parent = scene) => {
+    const m = new THREE.Mesh(geo, mat);
+    m.position.set(x, y, z); m.castShadow = true; m.receiveShadow = true;
+    parent.add(m); return m;
+  };
+  const canvasTex = (w, h, draw) => {
+    const c = document.createElement("canvas"); c.width = w; c.height = h;
+    const g = c.getContext("2d"); draw(g, w, h);
+    const t = new THREE.CanvasTexture(c); t.encoding = THREE.sRGBEncoding; t.anisotropy = 4;
+    t.userData = { c, g, draw }; return t;
+  };
+
+  /* room */
+  const floor = mesh(new THREE.PlaneGeometry(14, 14), std("#1a130f", { roughness: 0.85 }));
+  floor.rotation.x = -Math.PI / 2; floor.castShadow = false;
+  const wallMat = std("#10232a", { roughness: 0.95 });
+  const back = mesh(new THREE.PlaneGeometry(14, 6), wallMat, 0, 3, -2.4); back.castShadow = false;
+  const left = mesh(new THREE.PlaneGeometry(14, 6), wallMat, -2.7, 3, 0); left.rotation.y = Math.PI / 2; left.castShadow = false;
+  mesh(new THREE.BoxGeometry(14, 0.12, 0.03), std("#0a171c"), 0, 0.06, -2.385);
+
+  /* window onto bengaluru: one skyline, lit for night or day */
+  const skyline = [];
+  for (let x = 0; x < 1024;) {
+    const bw = 30 + Math.random() * 70, bh = 80 + Math.random() * 230;
+    skyline.push({ x, bw, bh, tone: Math.random() }); x += bw + 2;
+  }
+  const skyTex = canvasTex(1024, 640, (g, w, h) => {
+    const grad = g.createLinearGradient(0, 0, 0, h);
+    grad.addColorStop(0, "#030d12"); grad.addColorStop(0.6, "#0c2a33"); grad.addColorStop(1, "#24423f");
+    g.fillStyle = grad; g.fillRect(0, 0, w, h);
+    for (let i = 0; i < 60; i++) {
+      g.fillStyle = `rgba(255,255,255,${Math.random() * 0.3 + 0.05})`;
+      const r = Math.random() * 1.4 + 0.3;
+      g.beginPath(); g.arc(Math.random() * w, Math.random() * h * 0.6, r, 0, 7); g.fill();
+    }
+    skyline.forEach(({ x, bw, bh }) => {
+      g.fillStyle = "#0a0b16"; g.fillRect(x, h - bh, bw, bh);
+      for (let yy = h - bh + 10; yy < h - 6; yy += 14) for (let xx = x + 6; xx < x + bw - 8; xx += 11) {
+        if (Math.random() < 0.22) { g.fillStyle = Math.random() < 0.8 ? "#ffcf7a" : "#9fd8ff"; g.globalAlpha = 0.5 + Math.random() * 0.5; g.fillRect(xx, yy, 5, 7); g.globalAlpha = 1; }
+      }
+    });
+  });
+  const daySkyTex = canvasTex(1024, 640, (g, w, h) => {
+    const grad = g.createLinearGradient(0, 0, 0, h);
+    grad.addColorStop(0, "#7fa9c9"); grad.addColorStop(0.55, "#b9d0dd"); grad.addColorStop(1, "#dfe3dc");
+    g.fillStyle = grad; g.fillRect(0, 0, w, h);
+    /* soft, flat-bottomed cumulus */
+    for (let c = 0; c < 7; c++) {
+      const cx = Math.random() * w, cy = 40 + Math.random() * h * 0.35, s = 30 + Math.random() * 50;
+      for (let i = 0; i < 9; i++) {
+        const px = cx + (Math.random() - 0.5) * s * 3, py = cy + (Math.random() - 0.7) * s * 0.7, r = s * (0.5 + Math.random() * 0.6);
+        const rg = g.createRadialGradient(px, py, 0, px, py, r);
+        rg.addColorStop(0, "rgba(255,255,255,.55)"); rg.addColorStop(1, "rgba(255,255,255,0)");
+        g.fillStyle = rg; g.fillRect(px - r, py - r, r * 2, r * 2);
+      }
+    }
+    /* far haze band */
+    const haze = g.createLinearGradient(0, h * 0.45, 0, h);
+    haze.addColorStop(0, "rgba(225,226,218,0)"); haze.addColorStop(1, "rgba(225,226,218,.7)");
+    g.fillStyle = haze; g.fillRect(0, h * 0.45, w, h * 0.55);
+    skyline.forEach(({ x, bw, bh, tone }) => {
+      const base = tone < 0.4 ? [176, 171, 160] : tone < 0.75 ? [150, 152, 150] : [192, 184, 168];
+      g.fillStyle = `rgb(${base.join(",")})`; g.fillRect(x, h - bh, bw, bh);
+      g.fillStyle = "rgba(255,250,235,.22)"; g.fillRect(x, h - bh, bw * 0.35, bh); /* sunlit face */
+      g.fillStyle = "rgba(40,50,58,.08)"; g.fillRect(x + bw - 4, h - bh, 4, bh);
+      g.fillStyle = "rgba(60,72,82,.28)";
+      for (let yy = h - bh + 10; yy < h - 6; yy += 14) for (let xx = x + 6; xx < x + bw - 8; xx += 11) g.fillRect(xx, yy, 5, 7);
+    });
+    /* bengaluru's tree line */
+    for (let i = 0; i < 90; i++) {
+      const px = Math.random() * w, py = h - Math.random() * 46, r = 14 + Math.random() * 22;
+      g.fillStyle = ["#4c6440", "#5b7348", "#3f5636"][i % 3]; g.globalAlpha = 0.92;
+      g.beginPath(); g.arc(px, py, r, 0, 7); g.fill(); g.globalAlpha = 1;
+    }
+  });
+  const win = new THREE.Group(); win.position.set(0.55, 2.35, -2.39); scene.add(win);
+  const pane = new THREE.Mesh(new THREE.PlaneGeometry(1.7, 1.1), new THREE.MeshBasicMaterial({ map: skyTex, toneMapped: false }));
+  win.add(pane);
+  const dayPaneMat = new THREE.MeshBasicMaterial({ map: daySkyTex, toneMapped: false, transparent: true, opacity: 0, depthWrite: false });
+  const dayPane = new THREE.Mesh(new THREE.PlaneGeometry(1.7, 1.1), dayPaneMat);
+  dayPane.position.z = 0.001; win.add(dayPane);
+  /* the wall around the window, invisible, so the sun only gets in through the glass */
+  const occluder = new THREE.MeshBasicMaterial({ colorWrite: false, depthWrite: false, side: THREE.DoubleSide });
+  [[-4.35, 0, 7, 6], [4.85, 0, 8, 6], [0, 2.1, 1.84, 3.2], [0, -1.8, 1.84, 2.5]].forEach(([x, y, w, h]) => {
+    const o = new THREE.Mesh(new THREE.PlaneGeometry(w, h), occluder);
+    o.position.set(x, y, -0.03); o.castShadow = true; win.add(o);
+  });
+  const frameMat = std("#16262c");
+  [[0, 0.58, 1.84, 0.06], [0, -0.58, 1.84, 0.06], [-0.89, 0, 0.06, 1.22], [0.89, 0, 0.06, 1.22], [0, 0, 0.035, 1.1]].forEach(([x, y, w, h]) =>
+    mesh(new THREE.BoxGeometry(w, h, 0.06), frameMat, x, y, 0.02, win));
+  mesh(new THREE.BoxGeometry(1.95, 0.04, 0.16), frameMat, 0, -0.62, 0.07, win);
+
+  /* poster on the left wall */
+  const posterTex = canvasTex(512, 700, (g, w, h) => {
+    g.fillStyle = "#e9e2d2"; g.fillRect(0, 0, w, h);
+    g.fillStyle = "#1a1c26"; g.font = "600 74px Geist, sans-serif"; g.textBaseline = "top";
+    ["make it", "useful.", "then go", "deep."].forEach((l, i) => g.fillText(l, 40, 60 + i * 84));
+    g.fillStyle = "#d9772b"; g.fillRect(40, 420, 70, 8);
+    g.fillStyle = "#6a6a72"; g.font = "400 26px 'Geist Mono', monospace";
+    g.fillText("operating principle #1", 40, 600);
+  });
+  const poster = new THREE.Mesh(new THREE.PlaneGeometry(0.62, 0.85), std("#ffffff", { map: posterTex, roughness: 0.9 }));
+  poster.position.set(-2.68, 2.15, -1.2); poster.rotation.y = Math.PI / 2; scene.add(poster);
+
+  /* desk */
+  const TOP = 1.0;
+  const grain = canvasTex(1024, 256, (g, w, h) => {
+    g.fillStyle = "#5a3d2a"; g.fillRect(0, 0, w, h);
+    for (let i = 0; i < 220; i++) {
+      g.strokeStyle = `rgba(${Math.random() < 0.5 ? "30,18,10" : "120,86,60"},${0.08 + Math.random() * 0.18})`;
+      g.lineWidth = 0.5 + Math.random() * 2.5; g.beginPath();
+      const y = Math.random() * h; g.moveTo(0, y);
+      for (let x = 0; x <= w; x += 64) g.lineTo(x, y + Math.sin(x / 180 + i) * 6 + (Math.random() - 0.5) * 3);
+      g.stroke();
+    }
+  });
+  const wood = std("#ffffff", { map: grain, roughness: 0.55 });
+  mesh(new THREE.BoxGeometry(2.9, 0.06, 1.15), wood, 0, TOP - 0.03, -1.65);
+  const legMat = std("#2b2b31", { metalness: 0.4, roughness: 0.5 });
+  [[-1.38, -2.15], [1.38, -2.15], [-1.38, -1.15], [1.38, -1.15]].forEach(([x, z]) =>
+    mesh(new THREE.BoxGeometry(0.05, TOP - 0.06, 0.05), legMat, x, (TOP - 0.06) / 2, z));
+  mesh(new THREE.BoxGeometry(0.42, 0.012, 0.3), std("#22242c", { roughness: 0.95 }), 0.62, TOP + 0.006, -1.35);
+
+  /* clickable objects */
+  const clickables = {};
+  const hoverMeshes = {};
+  const makeObject = (key, x, z) => {
+    const g = new THREE.Group(); g.position.set(x, TOP, z); g.userData.key = key; scene.add(g);
+    clickables[key] = g; hoverMeshes[key] = []; return g;
+  };
+  const track = (key, m) => { hoverMeshes[key].push(m); return m; };
+
+  /* globe */
+  const globe = makeObject("globe", -0.88, -1.7);
+  const continents = canvasTex(1024, 512, (g, w, h) => {
+    g.fillStyle = "#173946"; g.fillRect(0, 0, w, h);
+    const P = (lon, lat) => [((lon + 180) / 360) * w, ((90 - lat) / 180) * h];
+    const land = [
+      [-100, 48, 26, 14], [-115, 60, 22, 10], [-90, 30, 12, 9], [-75, 10, 7, 6], [-60, -12, 14, 14], [-65, -35, 7, 12], [-42, 72, 10, 6],
+      [15, 50, 14, 8], [20, 8, 18, 18], [25, -20, 10, 12], [45, 25, 10, 8],
+      [90, 55, 40, 14], [80, 22, 9, 10], [105, 35, 16, 12], [110, 10, 8, 6], [135, -25, 14, 9], [138, 38, 3, 6]
+    ];
+    land.forEach(([lon, lat, rx, ry]) => {
+      for (let i = 0; i < 26; i++) {
+        const [cx, cy] = P(lon + (Math.random() - 0.5) * rx * 1.4, lat + (Math.random() - 0.5) * ry * 1.4);
+        g.fillStyle = Math.random() < 0.7 ? "#bba57a" : "#8e8a66";
+        g.beginPath(); g.ellipse(cx, cy, (rx / 360) * w * (0.25 + Math.random() * 0.35), (ry / 180) * h * (0.25 + Math.random() * 0.35), Math.random() * 3, 0, 7); g.fill();
+      }
+    });
+    g.strokeStyle = "rgba(255,255,255,0.12)"; g.lineWidth = 1;
+    for (let i = 1; i < 12; i++) { g.beginPath(); g.moveTo((i / 12) * w, 0); g.lineTo((i / 12) * w, h); g.stroke(); }
+    for (let i = 1; i < 6; i++) { g.beginPath(); g.moveTo(0, (i / 6) * h); g.lineTo(w, (i / 6) * h); g.stroke(); }
+  });
+  const brass = std("#b08a4a", { metalness: 0.8, roughness: 0.35 });
+  track("globe", mesh(new THREE.CylinderGeometry(0.1, 0.13, 0.035, 40), brass, 0, 0.0175, 0, globe));
+  track("globe", mesh(new THREE.CylinderGeometry(0.012, 0.016, 0.13, 12), brass, 0, 0.1, 0, globe));
+  const tilt = new THREE.Group(); tilt.position.y = 0.37; tilt.rotation.z = 0.41; globe.add(tilt);
+  const sphere = track("globe", mesh(new THREE.SphereGeometry(0.2, 48, 32), std("#ffffff", { map: continents, roughness: 0.55 }), 0, 0, 0, tilt));
+  const ring = track("globe", mesh(new THREE.TorusGeometry(0.228, 0.007, 8, 64, Math.PI), brass, 0, 0, 0, tilt));
+  ring.rotation.z = -Math.PI / 2; ring.rotation.y = Math.PI / 2;
+
+  /* zeo, osllo's mascot: a knitted plush pony */
+  const toy = makeObject("toy", 0.86, -1.3);
+  const knitBump = canvasTex(256, 256, (g, w, h) => {
+    g.fillStyle = "#808080"; g.fillRect(0, 0, w, h);
+    for (let y = 0; y < h; y += 8) for (let x = 0; x < w; x += 8) {
+      const o = (y / 8) % 2 ? 4 : 0;
+      const v = (200 + Math.random() * 40) | 0; g.fillStyle = `rgb(${v},${v},${v})`;
+      g.beginPath(); g.ellipse(x + o + 2, y + 4, 2.2, 3.6, 0.5, 0, 7); g.fill();
+      g.beginPath(); g.ellipse(x + o + 6, y + 4, 2.2, 3.6, -0.5, 0, 7); g.fill();
+    }
+  });
+  knitBump.encoding = THREE.LinearEncoding;
+  knitBump.wrapS = knitBump.wrapT = THREE.RepeatWrapping; knitBump.repeat.set(6, 6);
+  const fleeceBump = canvasTex(128, 128, (g, w, h) => {
+    const d = g.createImageData(w, h);
+    for (let i = 0; i < d.data.length; i += 4) { const v = 100 + Math.random() * 90; d.data[i] = d.data[i + 1] = d.data[i + 2] = v; d.data[i + 3] = 255; }
+    g.putImageData(d, 0, 0);
+  });
+  fleeceBump.encoding = THREE.LinearEncoding;
+  fleeceBump.wrapS = fleeceBump.wrapT = THREE.RepeatWrapping; fleeceBump.repeat.set(3, 3);
+  const selfLit = (m, c, k) => { m.userData.baseEm = new THREE.Color(c).multiplyScalar(k); m.emissive.copy(m.userData.baseEm); return m; };
+  const knit = c => selfLit(std(c, { roughness: 1, bumpMap: knitBump, bumpScale: 0.0018 }), "#fff6e8", 0.04);
+  const felt = c => selfLit(std(c, { roughness: 0.9, bumpMap: fleeceBump, bumpScale: 0.0012 }), c, 0.32);
+  const cream = knit("#efe8dc"), teal = felt("#03657a");
+  const zeo = new THREE.Group(); zeo.scale.setScalar(1.0); zeo.rotation.y = Math.PI + 0.6; toy.add(zeo);
+  const blob = (mat, x, y, z, rx, ry, rz, parent = zeo) => {
+    const m = track("toy", mesh(new THREE.SphereGeometry(1, 40, 28), mat, x, y, z, parent)); m.scale.set(rx, ry, rz); return m;
+  };
+  const limb = (mat, a, b, r, parent = zeo) => {
+    const dir = new THREE.Vector3().subVectors(b, a), len = dir.length();
+    const g = new THREE.Group(); g.position.copy(a); parent.add(g);
+    g.quaternion.setFromUnitVectors(new THREE.Vector3(0, 1, 0), dir.clone().normalize());
+    track("toy", mesh(new THREE.CylinderGeometry(r, r, len, 28), mat, 0, len / 2, 0, g));
+    track("toy", mesh(new THREE.SphereGeometry(r, 28, 16), mat, 0, len, 0, g));
+    track("toy", mesh(new THREE.SphereGeometry(r, 28, 16), mat, 0, 0, 0, g));
+    return g;
+  };
+  const V = (x, y, z) => new THREE.Vector3(x, y, z);
+
+  /* body, legs, hooves */
+  const BODY = { x: -0.01, y: 0.135, a: 0.088, b: 0.062, c: 0.058 };
+  blob(cream, BODY.x, BODY.y, 0, BODY.a, BODY.b, BODY.c);
+  [[0.045, 0.03], [-0.06, 0.03], [0.045, -0.03], [-0.06, -0.03]].forEach(([x, z]) => {
+    limb(cream, V(x, 0.115, z), V(x + (x > 0 ? 0.008 : -0.008), 0.045, z * 1.15), 0.023);
+    limb(teal, V(x + (x > 0 ? 0.008 : -0.008), 0.03, z * 1.15), V(x + (x > 0 ? 0.008 : -0.008), 0.022, z * 1.15), 0.0245);
+  });
+
+  /* neck and head */
+  limb(cream, V(0.045, 0.155, 0), V(0.088, 0.262, 0), 0.036);
+  const head = new THREE.Group(); head.position.set(0.105, 0.29, 0); head.rotation.z = -0.42; zeo.add(head);
+  blob(cream, 0, 0, 0, 0.05, 0.044, 0.041, head);
+  blob(cream, 0.05, -0.004, 0, 0.038, 0.036, 0.037, head);
+  const bridle = track("toy", mesh(new THREE.TorusGeometry(0.0375, 0.0038, 10, 48), teal, 0.035, -0.003, 0, head));
+  bridle.rotation.y = Math.PI / 2; bridle.scale.set(1, 1.02, 1.05);
+  [-1, 1].forEach(s => {
+    blob(teal, 0.084, 0.006, s * 0.014, 0.0045, 0.0055, 0.003, head).rotation.y = s * 0.4;
+    /* closed, sleepy eye with lashes */
+    const eye = track("toy", mesh(new THREE.TorusGeometry(0.0095, 0.0018, 8, 24, Math.PI), teal, -0.004, 0.012, s * 0.039, head));
+    eye.rotation.set(0, s > 0 ? 0 : Math.PI, Math.PI); eye.rotation.y += s * -0.35;
+    for (let i = 0; i < 3; i++) {
+      const ang = Math.PI + 0.6 + i * 0.95;
+      const l = track("toy", mesh(new THREE.CylinderGeometry(0.0013, 0.0013, 0.007, 6), teal,
+        -0.004 + Math.cos(ang) * 0.0115, 0.012 + Math.sin(ang) * 0.0115, s * 0.0405, head));
+      l.rotation.z = ang - Math.PI / 2;
+    }
+    /* ears */
+    const ear = new THREE.Group(); ear.position.set(-0.018, 0.04, s * 0.02); ear.rotation.set(s * -0.25, 0, 0.32); head.add(ear);
+    const outer = track("toy", mesh(new THREE.ConeGeometry(0.016, 0.055, 24), cream, 0, 0.026, 0, ear)); outer.scale.z = 0.6;
+    const inner = track("toy", mesh(new THREE.ConeGeometry(0.009, 0.038, 20), teal, 0.007, 0.022, 0, ear)); inner.scale.z = 0.35;
+  });
+
+  /* mane down the back of the neck */
+  for (let i = 0; i < 6; i++) {
+    const t = i / 5;
+    const m = blob(teal, 0.06 - t * 0.055 + 0.005, 0.33 - t * 0.135, 0, 0.022, 0.017, 0.014);
+    m.rotation.z = 0.6 + t * 0.3;
+  }
+  /* tail: three soft curls */
+  for (let i = 0; i < 3; i++) {
+    const tail = track("toy", mesh(new THREE.TorusGeometry(0.038 - i * 0.004, 0.0105, 12, 32, 1.9), teal, -0.088, 0.13, (i - 1) * 0.013, zeo));
+    tail.rotation.z = 1.1 + i * 0.08;
+  }
+  /* saddle patch */
+  blob(teal, -0.005, BODY.y + BODY.b - 0.004, 0, 0.034, 0.009, 0.042);
+
+  /* felt spots, sat on the body surface */
+  const feltSpot = (color, x, y, r, side) => {
+    const ux = (x - BODY.x) / BODY.a, uy = (y - BODY.y) / BODY.b;
+    const z = side * BODY.c * Math.sqrt(Math.max(0, 1 - ux * ux - uy * uy));
+    const p = V(x, y, z), n = V((x - BODY.x) / BODY.a ** 2, (y - BODY.y) / BODY.b ** 2, z / BODY.c ** 2).normalize();
+    const m = track("toy", mesh(new THREE.SphereGeometry(1, 28, 12), felt(color), x, y, z, zeo));
+    m.scale.set(r, r * 1.12, 0.0035); m.lookAt(p.clone().add(n).applyMatrix4(zeo.matrixWorld));
+    m.position.add(n.multiplyScalar(0.0006));
+  };
+  toy.updateMatrixWorld(true);
+  [-1, 1].forEach(s => {
+    feltSpot("#e8414a", 0.048, 0.15, 0.024, s);
+    feltSpot("#fbc800", -0.012, 0.122, 0.034, s);
+    feltSpot("#f27a0c", -0.066, 0.118, 0.022, s);
+  });
+
+  /* laptop with a live terminal */
+  const laptop = makeObject("laptop", 0.05, -1.55);
+  const alu = std("#8d9099", { metalness: 0.7, roughness: 0.35 });
+  track("laptop", mesh(new THREE.BoxGeometry(0.52, 0.022, 0.36), alu, 0, 0.011, 0, laptop));
+  track("laptop", mesh(new THREE.PlaneGeometry(0.44, 0.17), std("#1a1b20", { roughness: 0.9 }), 0, 0.0225, -0.04, laptop)).rotation.x = -Math.PI / 2;
+  /* keyboard: real rows of keys, mac layout */
+  const keyMat = std("#16181d", { roughness: 0.55, metalness: 0.1 });
+  const ROWS = [
+    [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2],
+    [1.5, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1.5],
+    [1.75, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2.25],
+    [2.25, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2.75],
+    [1, 1, 1, 1.25, 5.5, 1.25, 1, 1, 1, 1],
+  ];
+  const KU = 0.44 / 15, KGAP = 0.0042, KROW = 0.17 / 5;
+  ROWS.forEach((row, r) => {
+    let x = -0.22;
+    row.forEach(w => {
+      const k = new THREE.Mesh(new THREE.BoxGeometry(w * KU - KGAP, 0.003, KROW - KGAP - 0.002), keyMat);
+      k.position.set(x + (w * KU) / 2, 0.024, -0.04 - 0.085 + KROW * (r + 0.5));
+      k.receiveShadow = true; laptop.add(k); track("laptop", k);
+      x += w * KU;
+    });
+  });
+  /* the sticker on her real laptop, right of the trackpad */
+  const stickerTex = canvasTex(512, 256, (g, w, h) => {
+    g.clearRect(0, 0, w, h);
+    const r = 22; g.fillStyle = "#efebe3"; g.beginPath();
+    g.moveTo(r, 0); g.arcTo(w, 0, w, h, r); g.arcTo(w, h, 0, h, r); g.arcTo(0, h, 0, 0, r); g.arcTo(0, 0, w, 0, r); g.fill();
+    g.font = "600 50px 'Geist Mono', ui-monospace, monospace"; g.textBaseline = "middle";
+    const parts = [["context ", "#16161a"], [">", "#b8312f"], [" prompts", "#16161a"]];
+    let x = (w - parts.reduce((s, [t]) => s + g.measureText(t).width, 0)) / 2;
+    parts.forEach(([t, c]) => { g.fillStyle = c; g.fillText(t, x, h / 2 + 4); x += g.measureText(t).width; });
+  });
+  const sticker = mesh(new THREE.PlaneGeometry(0.1, 0.05), std("#ffffff", { map: stickerTex, transparent: true, roughness: 0.6 }), 0.17, 0.0228, 0.12, laptop);
+  sticker.rotation.x = -Math.PI / 2; sticker.castShadow = false;
+  track("laptop", mesh(new THREE.PlaneGeometry(0.15, 0.08), std("#6f727a", { metalness: 0.5, roughness: 0.4 }), 0, 0.0226, 0.115, laptop)).rotation.x = -Math.PI / 2;
+  const hinge = new THREE.Group(); hinge.position.set(0, 0.022, -0.18); hinge.rotation.x = -0.22; laptop.add(hinge);
+  track("laptop", mesh(new THREE.BoxGeometry(0.52, 0.34, 0.012), alu, 0, 0.17, -0.006, hinge));
+  const term = canvasTex(640, 400, () => {});
+  const screen = new THREE.Mesh(new THREE.PlaneGeometry(0.48, 0.3), new THREE.MeshBasicMaterial({ map: term, toneMapped: false }));
+  screen.position.set(0, 0.17, 0.0005); hinge.add(screen);
+  const lines = [
+    ["$ ", "whoami"],
+    ["", "harshika · operator, ai-native"],
+    ["$ ", "ls ~/shipped"],
+    ["", "shush/  second-brain/  content-engine/"],
+    ["$ ", "claude \"what's next?\""],
+  ];
+  const TOTAL = lines.reduce((n, [, l]) => n + l.length, 0);
+  let typed = 0, doneAt = 0;
+  function drawTerm(t) {
+    const { g, c } = term.userData;
+    g.fillStyle = "#0b0e16"; g.fillRect(0, 0, c.width, c.height);
+    g.fillStyle = "#161b27"; g.fillRect(0, 0, c.width, 34);
+    ["#ff5f57", "#febc2e", "#28c840"].forEach((col, i) => { g.fillStyle = col; g.beginPath(); g.arc(22 + i * 22, 17, 6, 0, 7); g.fill(); });
+    g.fillStyle = "#6b7280"; g.font = "500 15px 'Geist Mono', monospace"; g.fillText("~/desk — zsh", 270, 22);
+    g.font = "400 21px 'Geist Mono', monospace";
+    let budget = typed, y = 78, cx = 26, cy = 78;
+    for (const [p, s] of lines) {
+      const shown = s.slice(0, budget);
+      g.fillStyle = "#ffb45c"; g.fillText(p, 26, y);
+      g.fillStyle = p ? "#ece7dc" : "#9fd8ff"; g.fillText(shown, 26 + g.measureText(p).width, y);
+      cx = 26 + g.measureText(p + shown).width + 2; cy = y;
+      if (budget <= s.length) break;
+      budget -= s.length; y += 44;
+    }
+    if (Math.floor(t * 2) % 2 === 0) { g.fillStyle = "#ece7dc"; g.fillRect(cx, cy - 18, 11, 22); }
+    term.needsUpdate = true;
+  }
+
+  /* props */
+  const lamp = new THREE.Group(); lamp.position.set(1.12, TOP, -2.0); scene.add(lamp);
+  const lampMat = std("#20232c", { metalness: 0.5, roughness: 0.4 });
+  mesh(new THREE.CylinderGeometry(0.09, 0.1, 0.03, 32), lampMat, 0, 0.015, 0, lamp);
+  const arm1 = mesh(new THREE.CylinderGeometry(0.01, 0.01, 0.5, 8), lampMat, -0.06, 0.25, 0.04, lamp); arm1.rotation.z = 0.25;
+  const arm2 = mesh(new THREE.CylinderGeometry(0.01, 0.01, 0.4, 8), lampMat, -0.24, 0.55, 0.09, lamp); arm2.rotation.z = 1.05;
+  const shade = mesh(new THREE.ConeGeometry(0.11, 0.16, 32, 1, true), std("#20232c", { side: THREE.DoubleSide, metalness: 0.4, roughness: 0.5 }), -0.42, 0.6, 0.12, lamp);
+  shade.rotation.z = 0.5;
+  const bulb = new THREE.Mesh(new THREE.SphereGeometry(0.035, 16, 12), new THREE.MeshBasicMaterial({ color: "#ffd9a0", toneMapped: false }));
+  bulb.position.set(-0.43, 0.56, 0.12); lamp.add(bulb);
+
+  const mug = new THREE.Group(); mug.position.set(-0.45, TOP, -1.25); scene.add(mug);
+  mesh(new THREE.CylinderGeometry(0.045, 0.04, 0.1, 28), std("#1f2326", { roughness: 0.35 }), 0, 0.05, 0, mug);
+  mesh(new THREE.CylinderGeometry(0.041, 0.041, 0.002, 28), std("#3a2216", { roughness: 0.2 }), 0, 0.088, 0, mug);
+  const handle = mesh(new THREE.TorusGeometry(0.028, 0.007, 8, 20), std("#1f2326", { roughness: 0.35 }), 0.05, 0.05, 0, mug);
+
+  [["#4a2725", 0.34, 0.05], ["#1d2f37", 0.3, 0.04], ["#7d6640", 0.32, 0.035]].reduce((y, [c, w, h], i) => {
+    const b = mesh(new THREE.BoxGeometry(w, h, 0.22), std(c, { roughness: 0.8 }), -1.12, TOP + y + h / 2, -2.0);
+    b.rotation.y = (i - 1) * 0.12; return y + h;
+  }, 0);
+
+
+  /* lights */
+  scene.add(new THREE.HemisphereLight("#3f7684", "#120b07", 0.42));
+  const moon = new THREE.DirectionalLight("#7fbccc", 0.3); moon.position.set(1, 4, 3); scene.add(moon);
+  const spot = new THREE.SpotLight("#ffb766", 7, 4.5, 0.95, 0.55, 1.6);
+  spot.position.set(1.12 - 0.42, TOP + 0.58, -2.0 + 0.12);
+  spot.target.position.set(0.1, TOP, -1.55); scene.add(spot, spot.target);
+  spot.castShadow = true; spot.shadow.mapSize.set(1024, 1024); spot.shadow.bias = -0.0008; spot.shadow.radius = 4;
+  const zeoLight = new THREE.PointLight("#fff1dd", 0.95, 1.0, 2); zeoLight.position.set(0.62, TOP + 0.45, -0.95); scene.add(zeoLight);
+  const screenGlow = new THREE.PointLight("#8ccaff", 0.9, 1.4, 2); screenGlow.position.set(0.05, TOP + 0.2, -1.5); scene.add(screenGlow);
+  const winGlow = new THREE.PointLight("#3f9aa8", 0.7, 3.5, 2); winGlow.position.set(0.55, 2.2, -2.1); scene.add(winGlow);
+
+  /* daylight: late-morning sun through the window, bounce off the desk and floor */
+  const hemi = scene.children.find(o => o.isHemisphereLight);
+  const sun = new THREE.DirectionalLight("#fff0d6", 0);
+  sun.target.position.set(0.25, TOP, -1.45);
+  sun.position.copy(sun.target.position).add(new THREE.Vector3(0.25, 0.8, -0.55).multiplyScalar(6));
+  sun.castShadow = true; sun.shadow.mapSize.set(2048, 2048); sun.shadow.bias = -0.0006; sun.shadow.radius = 3;
+  Object.assign(sun.shadow.camera, { left: -3, right: 3, top: 3, bottom: -3, near: 0.5, far: 14 });
+  scene.add(sun, sun.target);
+  const bounce = new THREE.PointLight("#f3e6d2", 0, 5, 2); bounce.position.set(0.2, TOP + 0.9, -0.6); scene.add(bounce);
+  const LOOK = {
+    night: { hemiSky: "#3f7684", hemiGround: "#120b07", hemi: 0.42, moon: 0.3, spot: 7, zeo: 0.95, screen: 0.9, win: 0.7, winC: "#3f9aa8", sun: 0, bounce: 0, bulb: "#ffd9a0", fog: "#081216", exp: 0.95 },
+    day:   { hemiSky: "#cfe0e6", hemiGround: "#6b5440", hemi: 0.95, moon: 0, spot: 0, zeo: 0.25, screen: 0.3, win: 0.9, winC: "#e4eef0", sun: 2.6, bounce: 0.6, bulb: "#8f8a82", fog: "#8d9a96", exp: 1.0 },
+  };
+  const cA = new THREE.Color(), cB = new THREE.Color();
+  const mixC = (target, a, b, k) => target.copy(cA.set(a)).lerp(cB.set(b), k);
+  let dayMix = day ? 1 : 0;
+  function applyLook(k) {
+    const N = LOOK.night, D = LOOK.day, L = (a, b) => a + (b - a) * k;
+    mixC(hemi.color, N.hemiSky, D.hemiSky, k); mixC(hemi.groundColor, N.hemiGround, D.hemiGround, k); hemi.intensity = L(N.hemi, D.hemi);
+    moon.intensity = L(N.moon, D.moon);
+    zeoLight.intensity = L(N.zeo, D.zeo); screenGlow.intensity = L(N.screen, D.screen);
+    winGlow.intensity = L(N.win, D.win); mixC(winGlow.color, N.winC, D.winC, k);
+    sun.intensity = L(N.sun, D.sun); bounce.intensity = L(N.bounce, D.bounce);
+    mixC(bulb.material.color, N.bulb, D.bulb, k);
+    mixC(scene.fog.color, N.fog, D.fog, k); scene.background.copy(scene.fog.color);
+    renderer.toneMappingExposure = L(N.exp, D.exp);
+    dayPaneMat.opacity = k;
+  }
+  applyLook(dayMix);
+
+  /* camera rig */
+  const BASE = { pos: new THREE.Vector3(-0.32, 1.74, 0.72), look: new THREE.Vector3(-0.08, 1.12, -1.6) };
+  const FOCUS = {
+    globe: { pos: new THREE.Vector3(-0.72, 1.55, -0.72), look: new THREE.Vector3(-0.88, 1.36, -1.7) },
+    toy: { pos: new THREE.Vector3(0.9, 1.52, -0.42), look: new THREE.Vector3(0.86, 1.21, -1.3) },
+    laptop: { pos: new THREE.Vector3(0.05, 1.48, -0.6), look: new THREE.Vector3(0.05, 1.17, -1.62) },
+  };
+  const camPos = BASE.pos.clone(), camLook = BASE.look.clone();
+  const goalPos = new THREE.Vector3(), goalLook = new THREE.Vector3();
+  let focus = null, viewX = 0, viewY = 0;
+  onFocus = key => { focus = FOCUS[key] ? key : null; };
+  const mouse = new THREE.Vector2(0, 0), ndc = new THREE.Vector2(9, 9);
+  let narrow = false, W = 1, H = 1;
+
+  function resize() {
+    W = innerWidth; H = innerHeight; narrow = W < 720;
+    renderer.setSize(W, H, false);
+    camera.aspect = W / H;
+    camera.fov = narrow ? 50 : 36;
+    camera.updateProjectionMatrix();
+  }
+  addEventListener("resize", resize); resize();
+
+  /* picking */
+  const ray = new THREE.Raycaster();
+  let hovered = null;
+  const tagEls = {}; document.querySelectorAll(".tag").forEach(t => tagEls[t.dataset.key] = t);
+  function pick() {
+    ray.setFromCamera(ndc, camera);
+    const hit = ray.intersectObjects(Object.values(clickables), true)[0];
+    let o = hit && hit.object;
+    while (o && !o.userData.key) o = o.parent;
+    return o ? o.userData.key : null;
+  }
+  canvas.addEventListener("pointermove", e => {
+    mouse.set((e.clientX / W) * 2 - 1, -(e.clientY / H) * 2 + 1);
+    ndc.copy(mouse);
+  });
+  canvas.addEventListener("pointerleave", () => ndc.set(9, 9));
+  canvas.addEventListener("click", e => {
+    ndc.set((e.clientX / W) * 2 - 1, -(e.clientY / H) * 2 + 1);
+    const k = pick();
+    if (k) open(k); else if (active) close();
+  });
+
+  const glow = new THREE.Color("#ffb45c"), tint = new THREE.Color();
+  const GLOW = { globe: 0.12, toy: 0.05, laptop: 0.3 }; /* same golden hue on all three; brighter objects need more to show it */
+  const lift = { globe: 0, toy: 0, laptop: 0 };
+  const anchors = {
+    globe: new THREE.Vector3(-0.88, TOP + 0.56, -1.7),
+    toy: new THREE.Vector3(0.86, TOP + 0.52, -1.3),
+    laptop: new THREE.Vector3(0.05, TOP + 0.44, -1.72),
+  };
+  const v = new THREE.Vector3();
+  const clockT = new THREE.Clock();
+  let lastType = 0;
+
+  /* canvases drawn before the webfonts arrived get redrawn once they do */
+  if (document.fonts) document.fonts.ready.then(() => {
+    const { g, c, draw } = posterTex.userData; draw(g, c.width, c.height); posterTex.needsUpdate = true;
+    if (typeof stickerTex !== "undefined") { const u = stickerTex.userData; u.draw(u.g, u.c.width, u.c.height); stickerTex.needsUpdate = true; }
+  });
+
+  function frame() {
+    const dt = Math.min(clockT.getDelta(), 0.05), t = clockT.elapsedTime;
+    const ease = reduce ? 1 : 1 - Math.exp(-dt * 3.2);
+
+    /* camera */
+    const f = focus ? FOCUS[focus] : BASE;
+    goalPos.copy(f.pos); goalLook.copy(f.look);
+    const tall = Math.max(0, H / W - 0.62);
+    if (tall > 0) goalPos.z += focus ? Math.min(tall * 0.5, 0.5) : Math.min(tall * 2.4, 3), goalPos.y += focus ? 0 : Math.min(tall * 0.5, 0.6);
+    if (!focus && !reduce) { goalPos.x += mouse.x * 0.18; goalPos.y += mouse.y * 0.08; }
+    camPos.lerp(goalPos, ease); camLook.lerp(goalLook, ease);
+    camera.position.copy(camPos); camera.lookAt(camLook);
+    const tx = active && !narrow ? Math.min(460, W) / 2 : 0;
+    const ty = active && narrow ? H * 0.27 : 0;
+    viewX += (tx - viewX) * ease; viewY += (ty - viewY) * ease;
+    camera.setViewOffset(W, H, viewX, viewY, W, H);
+
+    /* hover */
+    const h = active ? null : pick();
+    if (h !== hovered) {
+      hovered = h; canvas.style.cursor = h ? "pointer" : "default";
+      Object.keys(tagEls).forEach(k => tagEls[k].classList.toggle("hot", k === h));
+    }
+    Object.keys(clickables).forEach(k => {
+      const target = (k === hovered || k === focus) ? 1 : 0;
+      lift[k] += (target - lift[k]) * (reduce ? 1 : 1 - Math.exp(-dt * 8));
+      clickables[k].position.y = TOP + lift[k] * 0.025;
+      hoverMeshes[k].forEach(m => { const base = m.material.userData.baseEm; m.material.emissive.copy(glow).multiplyScalar(lift[k] * GLOW[k]);
+        if (k === "toy") { const mat = m.material; mat.userData.baseColor = mat.userData.baseColor || mat.color.clone(); mat.color.copy(mat.userData.baseColor).multiply(tint.setRGB(1, 1 - 0.2 * lift[k], 1 - 0.5 * lift[k])); } if (base) m.material.emissive.add(k === "toy" ? tint.clone().multiply(base) : base); });
+    });
+
+    /* life */
+    if (!reduce) sphere.rotation.y += dt * (hovered === "globe" || focus === "globe" ? 0.9 : 0.18);
+    if (reduce) typed = TOTAL;
+    else if (typed < TOTAL && t - lastType > 0.06) { typed++; lastType = t; doneAt = t; }
+    else if (typed >= TOTAL && t - doneAt > 12) typed = 0;
+    drawTerm(t);
+    const goalMix = day ? 1 : 0;
+    if (dayMix !== goalMix) {
+      dayMix += (goalMix - dayMix) * (reduce ? 1 : 1 - Math.exp(-dt * 2.4));
+      if (Math.abs(goalMix - dayMix) < 0.002) dayMix = goalMix;
+      applyLook(dayMix);
+    }
+    spot.intensity = (7 + Math.sin(t * 1.3) * 0.08) * (1 - dayMix);
+
+    /* tags */
+    Object.keys(anchors).forEach(k => {
+      v.copy(anchors[k]); v.y += lift[k] * 0.025; v.project(camera);
+      const el = tagEls[k];
+      el.style.transform = `translate(${(v.x * 0.5 + 0.5) * W}px, ${(-v.y * 0.5 + 0.5) * H}px) translate(-50%, -100%)`;
+    });
+
+    if (!window.__pageOpen()) renderer.render(scene, camera);
+    requestAnimationFrame(frame);
+  }
+  drawTerm(0);
+  requestAnimationFrame(frame);
+})();
+</script>
+
+</body></html>
