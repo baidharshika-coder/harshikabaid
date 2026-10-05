@@ -448,9 +448,11 @@
     .photo.wide .frame { aspect-ratio: 16 / 9; }
 
     .top-left { left: 16px; } .top-right { right: 16px; } .bottom-left { left: 16px; } .bottom-right { right: 16px; }
-    .top-right { top: auto; bottom: calc(env(safe-area-inset-bottom, 0px) + 84px); left: 16px; right: auto; text-align: left; display: flex; flex-wrap: wrap; align-items: center; gap: 8px 14px; }
-    .top-right .meta { display: flex; gap: 10px; }
-    .top-right .mode { margin-top: 0; }
+    .top-right { top: auto; bottom: calc(env(safe-area-inset-bottom, 0px) + 56px); left: 0; right: 0; text-align: center; display: flex; flex-direction: column; align-items: center; gap: 10px; }
+    .top-right .meta { display: flex; justify-content: center; gap: 10px; }
+    .top-right .mode { margin-top: 0; order: -1; }
+    .bottom-left { left: 0; right: 0; text-align: center; }
+    .bottom-left .hint { opacity: .8; }
     .bio { font-size: 13px; max-width: 24ch; }
     .trail { font-size: 14px; max-width: 26ch; }
     .bottom-left { bottom: calc(env(safe-area-inset-bottom, 0px) + 52px); }
@@ -499,7 +501,7 @@
 </div>
 
 <div class="chrome bottom-left">
-  <p class="hint">click anything on the desk · or press <kbd>1</kbd> <kbd>2</kbd> <kbd>3</kbd></p>
+  <p class="hint" id="hint">click anything on the desk</p>
 </div>
 
 <nav class="chrome bottom-right links" aria-label="elsewhere">
@@ -1412,6 +1414,7 @@
   };
   const v = new THREE.Vector3();
   const headerEl = document.querySelector(".top-left");
+  const hintBox = document.querySelector(".bottom-left"); let hintY = null;
   let avoid = null, tagSize = {};
   const measure = () => { avoid = headerEl.getBoundingClientRect(); tagSize = {}; };
   addEventListener("resize", measure); measure();
@@ -1484,6 +1487,13 @@
       placed.push({ x, y, w: sz[0], h: sz[1] });
       el.style.transform = `translate(${x}px, ${y}px) translate(-50%, -100%)`;
     });
+
+    /* phone: the hint sits just under the front edge of the desk */
+    if (narrow) {
+      v.set(0, TOP - 0.06, -1.075).project(camera);
+      const hy = Math.round((-v.y * 0.5 + 0.5) * H + 14);
+      if (hy !== hintY) { hintY = hy; hintBox.style.top = hy + "px"; hintBox.style.bottom = "auto"; }
+    } else if (hintY !== null) { hintY = null; hintBox.style.top = ""; hintBox.style.bottom = ""; }
 
     if (!window.__pageOpen()) renderer.render(scene, camera);
     requestAnimationFrame(frame);
