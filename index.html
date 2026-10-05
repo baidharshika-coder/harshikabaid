@@ -465,6 +465,31 @@
     .sheet-head, .sheet-body, .sheet-foot { padding-left: 18px; padding-right: 18px; }
     .receipts li { grid-template-columns: 1fr; gap: 2px; }
   }
+  /* phone: full-story pages scroll less. card rows swipe sideways, quotes sit two-up */
+  @media (max-width: 720px) {
+    .paper.mono .page-in { gap: 56px; }
+    .paper section { grid-template-columns: 1fr; row-gap: 14px; }
+    .paper section > *, .paper section::before { grid-column: 1; }
+    .paper section::before { grid-row: auto; font-size: 40px; padding-top: 8px; }
+    .paper .parts, .paper .why { display: flex; overflow-x: auto; scroll-snap-type: x mandatory; gap: 10px;
+      margin: 0 -16px 0 0; padding: 10px 16px 10px 0; scrollbar-width: none; -webkit-overflow-scrolling: touch; }
+    .paper .parts::-webkit-scrollbar, .paper .why::-webkit-scrollbar { display: none; }
+    .paper .parts::before { display: none; }
+    .paper .parts > div, .paper .why > div { flex: 0 0 66%; scroll-snap-align: start; }
+    .paper .why div:nth-child(n) { transform: none; }
+    .paper .why div:hover, .paper .parts div:hover { transform: translateY(-4px); }
+    .paper header.explain .parts { margin-top: 24px; }
+    .paper .quotes { grid-template-columns: 1fr 1fr; gap: 8px; }
+    .paper .quotes figure { padding: 12px; gap: 10px; }
+    .paper .quotes blockquote { font-size: 12.5px; line-height: 1.45; }
+    .paper .quotes figcaption { gap: 7px; }
+    .paper .quotes figcaption i { width: 20px; height: 20px; font-size: 12px; }
+    .paper .quotes figcaption b { font-size: 11.5px; }
+    .paper .quotes figcaption span { font-size: 9.5px; }
+    .paper .book { max-width: none; padding: 12px 14px; }
+    .paper .book b { font-size: 17px; }
+    .paper .book span { font-size: 12.5px; }
+  }
   @media (prefers-reduced-motion: reduce) {
     .sheet { transition: none; }
     .status::before { animation: none; }
@@ -1374,13 +1399,14 @@
   let narrow = false, W = 1, H = 1;
 
   function resize() {
-    W = innerWidth; H = innerHeight; narrow = W < 720;
+    W = canvas.clientWidth || innerWidth; H = canvas.clientHeight || innerHeight; narrow = W < 720;
     renderer.setSize(W, H, false);
     camera.aspect = W / H;
     camera.fov = narrow ? 50 : 36;
     camera.updateProjectionMatrix();
   }
   addEventListener("resize", resize); resize();
+  if (window.visualViewport) visualViewport.addEventListener("resize", () => { resize(); if (typeof measure === "function") measure(); });
 
   /* picking */
   const ray = new THREE.Raycaster();
