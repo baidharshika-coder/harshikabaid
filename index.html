@@ -472,6 +472,8 @@
   }
   /* phone: full-story pages scroll less. card rows swipe sideways, quotes sit two-up */
   @media (max-width: 720px) {
+    .tag { gap: 5px; padding: 4px 9px 4px 7px; font-size: 10.5px; letter-spacing: 0; word-spacing: -0.25em; }
+    .tag::before { width: 4px; height: 4px; }
     .paper.mono .page-in { gap: 56px; }
     .paper section { grid-template-columns: 1fr; row-gap: 14px; }
     .paper section > *, .paper section::before { grid-column: 1; }
